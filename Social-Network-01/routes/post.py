@@ -10,7 +10,10 @@ router = APIRouter()
 
 post_table = {}
 
-@router.post("/", response_model=UserPost)
+def find_post(id: int):
+    return post_table.get(id)
+
+@router.post("/", response_model=UserPost, status_code=201)
 async def create_post(post: UserPostIn):
     data = post.model_dump()
 
