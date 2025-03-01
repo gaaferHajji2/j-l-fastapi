@@ -12,5 +12,6 @@ from routes.post import post_table
 
 from routes.comment import comment_table
 
+@pytest.fixture()
 def client()-> Generator:
     yield TestClient(app=app)
