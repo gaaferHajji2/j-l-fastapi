@@ -24,4 +24,4 @@ async def test_create_post(created_post):
 async def test_create_post_without_body(async_client: AsyncClient):
     response = await async_client.post("/post/", json={})
 
-    assert response.status_code != 201
+    assert response.status_code == 422
