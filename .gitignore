@@ -4,3 +4,4 @@ __pycache__
 *.png
 .vscode
 *.db
+.pytest_cache
