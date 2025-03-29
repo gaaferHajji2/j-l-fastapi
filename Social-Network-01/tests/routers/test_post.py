@@ -5,8 +5,9 @@ from httpx import AsyncClient
 async def create_post(body: str, async_client: AsyncClient):
     response = await async_client.post(url='/post/', json={"body": body})
 
-    print("The Status Code Is: ", response.status_code)
-    print("The Response Body Is: ", response.json())
+    # For Debugging Only
+    # print("The Status Code Is: ", response.status_code)
+    # print("The Response Body Is: ", response.json())
 
     return response.status_code, response.json()
 
@@ -18,3 +19,9 @@ async def created_post(async_client: AsyncClient):
 async def test_create_post(created_post):
     assert created_post[0] == 201
     assert {"body": "J-L-Test-01 Post"}.items() <= created_post[1].items()
+
+@pytest.mark.anyio
+async def test_create_post_without_body(async_client: AsyncClient):
+    response = await async_client.post("/post/", json={})
+
+    assert response.status_code != 201
