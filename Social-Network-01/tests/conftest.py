@@ -25,7 +25,7 @@ async def db() -> AsyncGenerator:
     comment_table.clear()
     post_table.clear()
 
-    yield post_table, comment_table
+    yield
 
 @pytest.fixture()
 async def async_client(client) -> AsyncGenerator:
