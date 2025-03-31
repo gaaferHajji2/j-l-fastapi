@@ -1,5 +1,7 @@
 from typing import Optional
 
+from functools import lru_cache
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class BaseConfig(BaseSettings):
@@ -24,3 +26,14 @@ class TestConfig(GlobalConfig):
     DB_FORCE_ROLL_BACK: bool = True
 
     model_config = SettingsConfigDict(env_prefix='TEST_')
+
+@lru_cache()
+def get_config(env_state: str):
+    configs = {"dev": DevConfig, "prod": ProdConfig, "test": TestConfig}
+
+    if env_state not in configs.keys():
+        raise Exception("Invalid Value For env_state Variable")
+    
+    return configs[env_state]()
+
+config = get_config(BaseConfig().ENV_STATE)
