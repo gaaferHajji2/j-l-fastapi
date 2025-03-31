@@ -28,7 +28,7 @@ class TestConfig(GlobalConfig):
     model_config = SettingsConfigDict(env_prefix='TEST_')
 
 @lru_cache()
-def get_config(env_state: str):
+def get_config(env_state: str) -> GlobalConfig:
     configs = {"dev": DevConfig, "prod": ProdConfig, "test": TestConfig}
 
     if env_state not in configs.keys():
