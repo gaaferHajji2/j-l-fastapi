@@ -27,7 +27,7 @@ async def created_post(async_client: AsyncClient):
 
 @pytest.fixture()
 async def created_comment(async_client: AsyncClient):
-    return await create_comment("J-L-Test-01 Comment", 0, async_client=async_client)
+    return await create_comment("J-L-Test-01 Comment", 1, async_client=async_client)
 
 @pytest.mark.anyio
 async def test_create_post(created_post: tuple):
@@ -62,4 +62,4 @@ async def test_create_comment(created_post: tuple, created_comment: tuple):
 
     assert status_code == 201
 
-    assert { "body": "J-L-Test-01 Comment", "post_id": 0}.items() <= data.items()
+    assert { "body": "J-L-Test-01 Comment", "post_id": 1}.items() <= data.items()
