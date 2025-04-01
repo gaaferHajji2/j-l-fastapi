@@ -1,5 +1,7 @@
 from fastapi import APIRouter
 
+from database import post_table, database
+
 from models.post import UserPost, UserPostIn
 
 router = APIRouter()
@@ -8,10 +10,11 @@ router = APIRouter()
 # async def getHelloMessage():
 #     return {"Message": "Hello"}
 
-post_table = {}
+# post_table = {}
 
-def find_post(id: int):
-    return post_table.get(id)
+async def find_post(post_id: int):
+    query = post_table.select().where(post_table.c.id == post_id)
+    return await database.fetch_one(query)
 
 @router.post("/", response_model=UserPost, status_code=201)
 async def create_post(post: UserPostIn):
@@ -30,4 +33,5 @@ async def create_post(post: UserPostIn):
 async def get_all_posts():
     # return post_table.values()
     # OR We Can Use
-    return list(post_table.values())
+    query = post_table.select()
+    return await database.fetch_all(query)
