@@ -12,9 +12,9 @@ os.environ["ENV_STATE"] = "test"
 
 from main import app
 
-from routes.post import post_table
+# from routes.post import post_table
 
-from routes.comment import comment_table
+# from routes.comment import comment_table
 
 from database import database
 
