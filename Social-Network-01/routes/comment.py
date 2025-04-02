@@ -36,7 +36,7 @@ async def get_post_comments(post_id: int):
     if post is None:
         raise HTTPException(status_code=404, detail="Post Not Found")
     
-    query = database.select().where(comments_table.c.post_id == post_id)
+    query = comments_table.select().where(comments_table.c.post_id == post_id)
 
     return await database.fetch_all(query)
 
