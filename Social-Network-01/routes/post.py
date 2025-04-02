@@ -20,13 +20,11 @@ async def find_post(post_id: int):
 async def create_post(post: UserPostIn):
     data = post.model_dump()
 
-    last_record_id = len(post_table)
+    query = post_table.insert().values(data)
 
-    new_post = {**data, "id": last_record_id}
+    last_id = await database.execute(query)
 
-    post_table[last_record_id] = new_post
-
-    return new_post
+    return  {**data, "id": last_id}
 
 
 @router.get("/", response_model=list[UserPost])
