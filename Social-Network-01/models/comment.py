@@ -14,7 +14,5 @@ class UserComment(UserCommentIn):
 
 class UserPostWithComments(BaseModel):
 
-    model_config = ConfigDict(from_attributes=True)
-
     post: UserPost
     comments: list[UserComment]
