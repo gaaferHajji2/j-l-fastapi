@@ -7,7 +7,7 @@ from config import config
 metadata = sqlalchemy.MetaData()
 
 ### Create The Posts Table ###
-post_table = sqlalchemy.Table(
+posts_table = sqlalchemy.Table(
     "posts",
     metadata,
     sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),

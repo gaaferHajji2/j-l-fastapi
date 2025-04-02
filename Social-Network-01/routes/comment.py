@@ -4,37 +4,45 @@ from models.comment import UserCommentIn, UserComment, UserPostWithComments
 
 from routes.post import find_post
 
-router = APIRouter()
+from database import comments_table, database
 
-comment_table = {}
+router = APIRouter()
 
 @router.post("/", response_model=UserComment, status_code=201)
 async def create_comment(comment: UserCommentIn):
     data = comment.model_dump()
 
-    post = find_post(data['post_id'])
+    post = await find_post(data['post_id'])
+
     if post is None:
         raise HTTPException(status_code=404, detail="Post Not Found")
+    
+    query = comments_table.insert().values(data)
 
-    last_record_id = len(comment_table)
+    last_id = await database.execute(query)
 
-    new_comment = {**data, "id": last_record_id}
-
-    comment_table[last_record_id] = new_comment
-
-    return new_comment
+    return {**data, "id": last_id}
 
 @router.get("/", response_model=list[UserComment])
 async def get_all_comments():
-    return list(comment_table.values())
+    query = comments_table.select()
+
+    return await database.fetch_all(query)
 
 @router.get("/{post_id}/comment", response_model=list[UserComment])
 async def get_post_comments(post_id: int):
-    return [comment for comment in comment_table.values() if comment["post_id" ]== post_id]
+    post = await find_post(post_id)
+
+    if post is None:
+        raise HTTPException(status_code=404, detail="Post Not Found")
+    
+    query = database.select().where(comments_table.c.post_id == post_id)
+
+    return await database.fetch_all(query)
 
 @router.get("/{post_id}/post-with-comments", response_model=UserPostWithComments)
 async def get_post_with_comments(post_id: int):
-    post = find_post(post_id)
+    post = await find_post(post_id)
 
     if post is None:
         raise HTTPException(status_code=404, detail="Post Not Found")
