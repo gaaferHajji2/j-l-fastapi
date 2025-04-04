@@ -21,7 +21,7 @@ def configure_logging() -> None:
             },
         },
         "loggers": {
-            "social_network": {
+            "main": {
                 "handlers": ["default"],
                 "level": "DEBUG" if isinstance(config, DevConfig) else "INFO",
                 "propagate": False,

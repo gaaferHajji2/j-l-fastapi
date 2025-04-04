@@ -11,20 +11,19 @@ from logging_conf import configure_logging
 
 from database import database
 
+logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
 
     configure_logging()
 
-    logger = logging.getLogger("social_network")
-
     await database.connect()
 
     logger.info("Database Connected Successfully")
 
     yield
-    
+
     await database.disconnect()
 
 app = FastAPI(lifespan=lifespan)
