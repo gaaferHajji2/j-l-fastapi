@@ -26,5 +26,20 @@ def configure_logging() -> None:
                 "level": "DEBUG" if isinstance(config, DevConfig) else "INFO",
                 "propagate": False,
             },
+
+            "uvicorn": {
+                "handlers": ["default"],
+                "level": "INFO",
+            },
+
+            "databases": {
+                "handlers": ["default"],
+                "level": "INFO",
+            },
+
+            "aiosqlite": {
+                "handlers": ["default"],
+                "level": "INFO",
+            },
         },
     })
