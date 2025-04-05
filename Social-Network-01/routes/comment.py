@@ -23,6 +23,8 @@ async def create_comment(comment: UserCommentIn):
     
     query = comments_table.insert().values(data)
 
+    logger.debug(f"The Query For Create Comment Is: {query}")
+
     last_id = await database.execute(query)
 
     return {**data, "id": last_id}
@@ -30,6 +32,8 @@ async def create_comment(comment: UserCommentIn):
 @router.get("/", response_model=list[UserComment])
 async def get_all_comments():
     query = comments_table.select()
+
+    logger.debug(f"The Query For Get All Comments Is: {query}")
 
     return await database.fetch_all(query)
 
@@ -41,6 +45,8 @@ async def get_post_comments(post_id: int):
         raise HTTPException(status_code=404, detail="Post Not Found")
     
     query = comments_table.select().where(comments_table.c.post_id == post_id)
+
+    logger.debug(f"The Query For Get Post Comments Is: {query}")
 
     return await database.fetch_all(query)
 
