@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 async def find_post(post_id: int):
     query = posts_table.select().where(posts_table.c.id == post_id)
 
-    logger.info(f"The Query For Get Post By Id: {query}")
+    logger.debug(f"The Query For Get Post By Id: {query}")
 
     return await database.fetch_one(query)
 
@@ -29,7 +29,7 @@ async def create_post(post: UserPostIn):
 
     query = posts_table.insert().values(data)
 
-    logger.info(f"The Query For Create Post Is: {query}")
+    logger.debug(f"The Query For Create Post Is: {query}")
 
     last_id = await database.execute(query)
 
@@ -42,6 +42,6 @@ async def get_all_posts():
     # OR We Can Use
     query = posts_table.select()
 
-    logger.info(f"The Query For Get All Posts Is: {query}")
+    logger.debug(f"The Query For Get All Posts Is: {query}")
 
     return await database.fetch_all(query)
