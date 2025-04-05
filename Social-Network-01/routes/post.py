@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter
 
 from database import posts_table, database
@@ -5,6 +7,8 @@ from database import posts_table, database
 from models.post import UserPost, UserPostIn
 
 router = APIRouter()
+
+logger = logging.getLogger(__name__)
 
 # @router.get("/")
 # async def getHelloMessage():
@@ -14,6 +18,9 @@ router = APIRouter()
 
 async def find_post(post_id: int):
     query = posts_table.select().where(posts_table.c.id == post_id)
+
+    logger.info(f"The Query For Get Post By Id: {query}")
+
     return await database.fetch_one(query)
 
 @router.post("/", response_model=UserPost, status_code=201)
@@ -21,6 +28,8 @@ async def create_post(post: UserPostIn):
     data = post.model_dump()
 
     query = posts_table.insert().values(data)
+
+    logger.info(f"The Query For Create Post Is: {query}")
 
     last_id = await database.execute(query)
 
@@ -32,4 +41,7 @@ async def get_all_posts():
     # return post_table.values()
     # OR We Can Use
     query = posts_table.select()
+
+    logger.info(f"The Query For Get All Posts Is: {query}")
+
     return await database.fetch_all(query)
