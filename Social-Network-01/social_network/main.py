@@ -6,6 +6,8 @@ from fastapi.exception_handlers import http_exception_handler
 
 import logging
 
+from asgi_correlation_id import CorrelationIdMiddleware
+
 from social_network.routes.post import router as post_router
 from social_network.routes.comment import router as comment_router
 
@@ -29,6 +31,8 @@ async def lifespan(app: FastAPI):
     await database.disconnect()
 
 app = FastAPI(lifespan=lifespan)
+
+app.add_middleware(CorrelationIdMiddleware)
 
 app.include_router(post_router, prefix="/post")
 
