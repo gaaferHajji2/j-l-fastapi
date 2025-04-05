@@ -1,6 +1,6 @@
 from logging.config import dictConfig
 
-from config import DevConfig, config
+from social_network.config import DevConfig, config
 
 def configure_logging() -> None:
     dictConfig({
@@ -37,7 +37,7 @@ def configure_logging() -> None:
             },
         },
         "loggers": {
-            "main": {
+            "social_network": {
                 "handlers": ["default", "rotating_file"],
                 "level": "DEBUG" if isinstance(config, DevConfig) else "INFO",
                 "propagate": False,

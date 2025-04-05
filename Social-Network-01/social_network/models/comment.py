@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 
-from models.post import UserPost
+from social_network.models.post import UserPost
 
 class UserCommentIn(BaseModel):
     body: str

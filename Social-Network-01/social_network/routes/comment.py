@@ -2,15 +2,17 @@ import logging
 
 from fastapi import APIRouter, HTTPException
 
-from models.comment import UserCommentIn, UserComment, UserPostWithComments
+from social_network.models.comment import UserCommentIn, UserComment, UserPostWithComments
 
-from routes.post import find_post
+from social_network.routes.post import find_post
 
-from database import comments_table, database
+from social_network.database import comments_table, database
 
 router = APIRouter()
 
 logger = logging.getLogger(__name__)
+
+print(__name__)
 
 @router.post("/", response_model=UserComment, status_code=201)
 async def create_comment(comment: UserCommentIn):

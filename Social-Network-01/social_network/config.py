@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class BaseConfig(BaseSettings):
     ENV_STATE: Optional[str] = None
 
-    model_config = SettingsConfigDict(env_file='.env', extra="ignore")
+    model_config = SettingsConfigDict(env_file='social_network/.env', extra="ignore")
 
 class GlobalConfig(BaseConfig):
     DATABASE_URL: Optional[str] = None
@@ -32,7 +32,7 @@ def get_config(env_state: str) -> GlobalConfig:
     configs = {"dev": DevConfig, "prod": ProdConfig, "test": TestConfig}
 
     if env_state not in configs.keys():
-        raise Exception("Invalid Value For env_state Variable")
+        raise Exception(f"Invalid Value For env_state Variable {env_state}")
     
     return configs[env_state]()
 

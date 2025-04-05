@@ -2,13 +2,15 @@ import logging
 
 from fastapi import APIRouter
 
-from database import posts_table, database
+from social_network.database import posts_table, database
 
-from models.post import UserPost, UserPostIn
+from social_network.models.post import UserPost, UserPostIn
 
 router = APIRouter()
 
 logger = logging.getLogger(__name__)
+
+print(__name__)
 
 # @router.get("/")
 # async def getHelloMessage():

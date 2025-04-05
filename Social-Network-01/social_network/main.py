@@ -4,12 +4,12 @@ from fastapi import FastAPI
 
 import logging
 
-from routes.post import router as post_router
-from routes.comment import router as comment_router
+from social_network.routes.post import router as post_router
+from social_network.routes.comment import router as comment_router
 
-from logging_conf import configure_logging
+from social_network.logging_conf import configure_logging
 
-from database import database
+from social_network.database import database
 
 logger = logging.getLogger(__name__)
 

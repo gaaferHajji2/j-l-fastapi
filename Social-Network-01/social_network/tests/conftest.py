@@ -10,13 +10,13 @@ from httpx import ASGITransport, AsyncClient
 
 os.environ["ENV_STATE"] = "test"
 
-from main import app
+from social_network.main import app
 
 # from routes.post import post_table
 
 # from routes.comment import comment_table
 
-from database import database
+from social_network.database import database
 
 @pytest.fixture(scope="session")
 def anyio_backend():
