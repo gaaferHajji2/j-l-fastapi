@@ -1,6 +1,8 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
+
+from fastapi.exception_handlers import http_exception_handler
 
 import logging
 
@@ -31,3 +33,9 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(post_router, prefix="/post")
 
 app.include_router(comment_router, prefix="/comment")
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler_logger(request: Request, exc: HTTPException):
+    logger.error(f"HTTPException With Status Code: {exc.status_code}, Details: {exc.detail}")
+
+    return await http_exception_handler(request, exc)

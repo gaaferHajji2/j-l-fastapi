@@ -45,9 +45,9 @@ async def get_post_comments(post_id: int):
 
     if post is None:
         
-        logger.error(f"Post Not Found For Get Comments With Id: {post_id}")
+        # logger.error(f"Post Not Found For Get Comments With Id: {post_id}")
 
-        raise HTTPException(status_code=404, detail="Post Not Found")
+        raise HTTPException(status_code=404, detail=f"Post Not Found For Get Post Comments With Id: {post_id}")
     
     query = comments_table.select().where(comments_table.c.post_id == post_id)
 
@@ -61,9 +61,9 @@ async def get_post_with_comments(post_id: int):
 
     if post is None:
         
-        logger.error(f"Post Not Found For Get Post With Comments With Id: {post_id}")
+        # logger.error(f"Post Not Found For Get Post With Comments With Id: {post_id}")
         
-        raise HTTPException(status_code=404, detail="Post Not Found")
+        raise HTTPException(status_code=404, detail=f"Post Not Found For Get Post With Its Comments With Id: {post_id}")
     
     # return {
     #     "post": post,
