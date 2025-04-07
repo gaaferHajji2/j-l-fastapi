@@ -9,6 +9,8 @@ def configure_logging() -> None:
         "disable_existing_loggers": False, 
         "filters": {
             "correlation_id": {
+                # In This Way We Reject Any Logging Msg 
+                # That Doesn't Contain CorrelationId-Value
                 "()": "asgi_correlation_id.CorrelationIdFilter",
                 # Here We Pass The Parameters To CorrelationIdFilter
                 "uuid_length": 8 if isinstance(config, DevConfig) else 32,
@@ -42,7 +44,7 @@ def configure_logging() -> None:
                 "formatter": "file",
                 "filename": "j_l_social_network.log",
                 "maxBytes": 1024 * 1024, # 1MB
-                "backupCount": 2,
+                "backupCount": 2, # Only Save The Latest 2-Files Of Our Logs
                 "encoding": "utf8",
                 "filters": ["correlation_id"],
             },
@@ -55,6 +57,8 @@ def configure_logging() -> None:
                 # Note: The Main Parent For All Loggers Is Root
             },
 
+            # In This Way We Override The Configuration Of 
+            # uvicorn, databases, aiosqlite-Modules
             "uvicorn": {
                 "handlers": ["default", "rotating_file"],
                 "level": "INFO",
