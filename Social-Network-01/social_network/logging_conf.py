@@ -59,6 +59,7 @@ def configure_logging() -> None:
 
             # In This Way We Override The Configuration Of 
             # uvicorn, databases, aiosqlite-Modules
+            # Note: Not All Logs Will Be Formatted
             "uvicorn": {
                 "handlers": ["default", "rotating_file"],
                 "level": "INFO",
