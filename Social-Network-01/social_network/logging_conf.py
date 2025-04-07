@@ -4,8 +4,9 @@ from social_network.config import DevConfig, config
 
 def configure_logging() -> None:
     dictConfig({
-        "version": 1,
-        "disable_existing_loggers": False,
+        "version": 1, # This Is For Using Specific Version Of Logging
+        # Until Now, It is The Only Version
+        "disable_existing_loggers": False, 
         "filters": {
             "correlation_id": {
                 "()": "asgi_correlation_id.CorrelationIdFilter",

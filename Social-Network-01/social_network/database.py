@@ -22,7 +22,7 @@ comments_table = sqlalchemy.Table(
     sqlalchemy.Column("body", sqlalchemy.String),
     # Here We Don't Need To Tell The Type Of Column, Because It's ForeignKey
     # So It Will Give It The Same Type Of Id Of Posts Table.
-    sqlalchemy.Column("post_id", sqlalchemy.ForeignKey("posts.id"),nullable=False, ),
+    sqlalchemy.Column("post_id", sqlalchemy.ForeignKey("posts.id"), nullable=False, ),
 )
 
 # connect_args={ "check_same_thread": False } --> This Only Required For Sqlite

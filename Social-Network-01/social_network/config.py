@@ -1,6 +1,7 @@
 from typing import Optional
 
-from functools import lru_cache
+from functools import lru_cache # This For Caching The Results Of Function
+# Depending On Parameters
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -20,8 +21,8 @@ class ProdConfig(GlobalConfig):
     model_config = SettingsConfigDict(env_prefix='PROD_')
 
 class TestConfig(GlobalConfig):
-    # If We Want To Override These Variables We Can Add Them 
-    # To .env-File
+    # In This Way We Override The Values In .env-File
+    # For test-State
     DATABASE_URL: Optional[str] = "sqlite:///test.db"
     DB_FORCE_ROLL_BACK: bool = True
 
