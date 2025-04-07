@@ -42,7 +42,7 @@ app.include_router(comment_router, prefix="/comment")
 
 @app.exception_handler(HTTPException) # In This Way We Can Pass:
 # The Exception Class OR The Status Code That We Want To Handle
-# We Return Any Class That Inherite From Response-Class Like: JSONResponse
+# We Return Any Class That Inherit From Response-Class Like: JSONResponse
 async def http_exception_handler_logger(request: Request, exc: HTTPException):
     logger.error(f"HTTPException With Status Code: {exc.status_code}, Details: {exc.detail}")
 
