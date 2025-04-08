@@ -1,6 +1,12 @@
+import logging
+
 from logging.config import dictConfig
 
 from social_network.config import DevConfig, config
+
+class EmailObfuscationFilter(logging.Filter):
+    def filter(self, record: logging.LogRecord):
+        return True
 
 def configure_logging() -> None:
     dictConfig({
