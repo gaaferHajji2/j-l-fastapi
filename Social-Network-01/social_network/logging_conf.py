@@ -4,8 +4,22 @@ from logging.config import dictConfig
 
 from social_network.config import DevConfig, config
 
+
+def obfuscated(email: str, obfuscated_length: int) -> str:
+    characters = email[:obfuscated_length]
+
 class EmailObfuscationFilter(logging.Filter):
-    def filter(self, record: logging.LogRecord):
+
+    def __init__(self, name: str = "", obfuscated_length: int = 2):
+        super().__init__(name)
+
+        self.obfuscated_length = obfuscated_length
+
+    def filter(self, record: logging.LogRecord) -> bool:
+
+        if "email" in record.__dict__:
+            record.email = obfuscated(record.email, self.obfuscated_length)
+
         return True
 
 def configure_logging() -> None:
