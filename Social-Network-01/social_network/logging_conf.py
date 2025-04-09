@@ -78,7 +78,7 @@ def configure_logging() -> None:
                 "maxBytes": 1024 * 1024, # 1MB
                 "backupCount": 2, # Only Save The Latest 2-Files Of Our Logs
                 "encoding": "utf8",
-                "filters": ["correlation_id","email_obfuscation"],
+                "filters": ["correlation_id", "email_obfuscation"],
             },
         },
         "loggers": {
