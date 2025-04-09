@@ -42,7 +42,8 @@ def configure_logging() -> None:
                 "uuid_length": 8 if isinstance(config, DevConfig) else 32,
                 "default_value": "-"
             },
-            "email_obfuscation": {
+            "email_obfuscation": { # This Is The Name That We Want To Pass It
+                # To The Init Method
                 "()": EmailObfuscationFilter,
                 "obfuscated_length": 2
             },
