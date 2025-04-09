@@ -24,6 +24,8 @@ class EmailObfuscationFilter(logging.Filter):
         if "email" in record.__dict__:
             record.email = obfuscated(record.email, self.obfuscated_length)
 
+            # print("The Email Value Is: ", record.email) # For Debugging Only
+
         return True
 
 def configure_logging() -> None:

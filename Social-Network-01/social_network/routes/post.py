@@ -31,7 +31,7 @@ async def create_post(post: UserPostIn):
 
     query = posts_table.insert().values(data)
 
-    logger.debug(f"The Query For Create Post Is: {query}")
+    logger.debug(f"The Query For Create Post Is: {query}", extra={"email": "jafar.loka@loka.com"})
 
     last_id = await database.execute(query)
 
