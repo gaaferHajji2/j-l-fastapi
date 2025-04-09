@@ -8,6 +8,10 @@ from social_network.config import DevConfig, config
 def obfuscated(email: str, obfuscated_length: int) -> str:
     characters = email[:obfuscated_length]
 
+    first, last = email.split('@')
+
+    return characters + ('*' * (len(first) - obfuscated_length)) + '@' + last
+
 class EmailObfuscationFilter(logging.Filter):
 
     def __init__(self, name: str = "", obfuscated_length: int = 2):
