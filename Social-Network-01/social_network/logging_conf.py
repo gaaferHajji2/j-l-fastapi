@@ -39,7 +39,11 @@ def configure_logging() -> None:
                 # Here We Pass The Parameters To CorrelationIdFilter
                 "uuid_length": 8 if isinstance(config, DevConfig) else 32,
                 "default_value": "-"
-            }
+            },
+            "email_obfuscation": {
+                "()": EmailObfuscationFilter,
+                "obfuscated_length": 2
+            },
         },
         "formatters": {
             "console": {
@@ -60,7 +64,7 @@ def configure_logging() -> None:
                 "class": "rich.logging.RichHandler",
                 "level": "DEBUG",
                 "formatter": "console",
-                "filters": ["correlation_id"],
+                "filters": ["correlation_id", "email_obfuscation"],
             },
 
             "rotating_file": {
@@ -71,7 +75,7 @@ def configure_logging() -> None:
                 "maxBytes": 1024 * 1024, # 1MB
                 "backupCount": 2, # Only Save The Latest 2-Files Of Our Logs
                 "encoding": "utf8",
-                "filters": ["correlation_id"],
+                "filters": ["correlation_id","email_obfuscation"],
             },
         },
         "loggers": {
