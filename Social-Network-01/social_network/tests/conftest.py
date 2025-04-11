@@ -8,6 +8,8 @@ from fastapi.testclient import TestClient
 
 from httpx import ASGITransport, AsyncClient
 
+import logging
+
 os.environ["ENV_STATE"] = "test"
 
 from social_network.main import app
@@ -17,6 +19,8 @@ from social_network.main import app
 # from routes.comment import comment_table
 
 from social_network.database import database
+
+logger = logging.getLogger(__name__)
 
 @pytest.fixture(scope="session")
 def anyio_backend():
@@ -46,13 +50,16 @@ async def async_client(client) -> AsyncGenerator:
 async def registered_user(async_client: AsyncClient) -> dict:
     user_details = {"email": "jafar@loka.com", "password": "Test@123"}
 
-    response = await async_client.post('/user/register/', json=user_details)
+    response = await async_client.post('/user/register', json=user_details)
+
+    # print(f"The Response Data Is: {response.content}")
+    # print(f"The Response Status Code Is: {response.status_code}")
 
     result = response.json()
 
-    print("The Response Status Code: ", response.status_code)
-    print("The Response Body Is: ", user_details)
-    print("The ID Of User Is: ", result["id"])
+    # logger.debug(f"The Response Status Code: {response.status_code}")
+    # logger.debug(f"The Response Body Is: {user_details}")
+    # logger.debug(f"The ID Of User Is: {result["id"]}", )
 
     user_details["id"] = result["id"]
 
