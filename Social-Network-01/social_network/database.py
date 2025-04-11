@@ -25,6 +25,15 @@ comments_table = sqlalchemy.Table(
     sqlalchemy.Column("post_id", sqlalchemy.ForeignKey("posts.id"), nullable=False, ),
 )
 
+### Create The Users Table ###
+users_table = sqlalchemy.Table(
+    "users",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key = True),
+    sqlalchemy.Column("email", sqlalchemy.String(50), unique=True, nullable=False),
+    sqlalchemy.Column("password", sqlalchemy.String, nullable=False),
+)
+
 # connect_args={ "check_same_thread": False } --> This Only Required For Sqlite
 engine = sqlalchemy.create_engine(
     url = config.DATABASE_URL, connect_args={ "check_same_thread": False }
