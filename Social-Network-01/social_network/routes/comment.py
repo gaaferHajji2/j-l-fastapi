@@ -12,7 +12,7 @@ router = APIRouter()
 
 logger = logging.getLogger(__name__)
 
-print(__name__)
+# print(__name__)
 
 @router.post("/", response_model=UserComment, status_code=201)
 async def create_comment(comment: UserCommentIn):

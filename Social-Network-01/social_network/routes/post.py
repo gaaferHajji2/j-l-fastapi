@@ -10,7 +10,7 @@ router = APIRouter()
 
 logger = logging.getLogger(__name__)
 
-print(__name__)
+# print(__name__)
 
 # @router.get("/")
 # async def getHelloMessage():
