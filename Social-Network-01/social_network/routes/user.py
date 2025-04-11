@@ -31,6 +31,6 @@ async def register(user: UserIn):
 
     logger.debug(f"The Query For Creating User: {query}")
 
-    await database.execute(query)
+    result = await database.execute(query)
 
-    return {"msg": "User Created Successfully"}
+    return {"msg": "User Created Successfully", "id": result}

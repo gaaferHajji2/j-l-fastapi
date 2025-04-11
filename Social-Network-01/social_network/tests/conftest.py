@@ -41,3 +41,19 @@ async def db() -> AsyncGenerator:
 async def async_client(client) -> AsyncGenerator:
     async with AsyncClient(transport=ASGITransport(app=app),base_url=client.base_url) as ac:
         yield ac
+
+@pytest.fixture()
+async def registered_user(async_client: AsyncClient) -> dict:
+    user_details = {"email": "jafar@loka.com", "password": "Test@123"}
+
+    response = await async_client.post('/user/register/', json=user_details)
+
+    result = response.json()
+
+    print("The Response Status Code: ", response.status_code)
+    print("The Response Body Is: ", user_details)
+    print("The ID Of User Is: ", result["id"])
+
+    user_details["id"] = result["id"]
+
+    return user_details
