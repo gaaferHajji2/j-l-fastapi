@@ -15,6 +15,7 @@ class GlobalConfig(BaseConfig):
     DB_FORCE_ROLL_BACK: bool = False
     SECRET_KEY: str = None
     ALGORITHM: str = None
+    EXPIRE_MINUTES: int = 30
 
 class DevConfig(GlobalConfig):
     model_config = SettingsConfigDict(env_prefix='DEV_')

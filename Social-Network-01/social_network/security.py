@@ -14,16 +14,19 @@ logger = logging.getLogger(__name__)
 
 pwd_context = CryptContext(schemes=["bcrypt"])
 
+def get_token_expire_minutes():
+    return config.EXPIRE_MINUTES
+
 def create_access_token(email: str) -> str:
     logger.debug("Creating Access Token", extra={"email": email})
 
     expire = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
-        minutes=30
+        minutes=get_token_expire_minutes(),
     )
 
     jwt_data = {"sub": email, "exp": expire}
 
-    encoded_jwt = jwt.encode(jwt_data, config.SECRET_KEY, algorithm=config.ALGORITHM)
+    encoded_jwt = jwt.encode(jwt_data, key=config.SECRET_KEY, algorithm=config.ALGORITHM)
 
     return encoded_jwt
 
