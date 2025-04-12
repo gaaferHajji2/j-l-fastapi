@@ -6,7 +6,7 @@ from passlib.context import CryptContext
 
 import datetime
 
-from jose import jwt
+from jose import jwt, ExpiredSignatureError, JWTError
 
 from social_network.database import database, users_table
 
@@ -51,17 +51,52 @@ async def get_user_by_email(email: str):
     if result:
         return result
 
+credentials_exception = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED, 
+    detail="Couldn't Login",
+    headers={
+        "WWW-Authenticate": "Bearer",
+    }
+)
+
 async def authenticate_user(email: str, password: str):
     user = await get_user_by_email(email)
 
     if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Couldn't Login 1") 
+        raise credentials_exception 
 
     #try:
     if not verify_password(password, user.password):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Couldn't Login 2")
+        raise credentials_exception
     # except Exception as e:
     #         logger.error(f"The Error In Verifying Password Is: {e.__str__()}")
     #         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Couldn't Login 2")
 
     return create_access_token(user.email)
+
+async def get_current_user(token: str):
+    try:
+        payload = jwt.decode(token=token, key=config.SECRET_KEY, algorithms=[config.ALGORITHM])
+
+        email = payload.get('sub', None)
+
+        if email is None:
+            raise credentials_exception
+        
+        user = get_user_by_email(email=email)
+
+        if user is None:
+            raise credentials_exception
+        
+        return user
+    
+    except ExpiredSignatureError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, 
+            detail="Token Has Been Expired",
+            headers={
+                "WWW-Authenticate": "Bearer",
+            },
+        ) from e
+    except JWTError as e:
+        raise credentials_exception from e
