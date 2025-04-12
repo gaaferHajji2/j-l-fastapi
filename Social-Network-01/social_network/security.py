@@ -57,7 +57,11 @@ async def authenticate_user(email: str, password: str):
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Couldn't Login 1") 
 
-    if not verify_password(password, user.password):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Couldn't Login 2") 
+    try:
+        if not verify_password(password, user.password):
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Couldn't Login 2")
+    except Exception as e:
+            logger.error(f"The Error In Verifying Password Is: {e.__str__()}")
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Couldn't Login 2")
 
     return create_access_token(user.email)
