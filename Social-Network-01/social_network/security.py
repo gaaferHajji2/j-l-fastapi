@@ -1,3 +1,5 @@
+from fastapi import HTTPException, status
+
 import logging
 
 from passlib.context import CryptContext
@@ -48,3 +50,15 @@ async def get_user_by_email(email: str):
 
     if result:
         return result
+
+async def authenticate_user(email: str, password: str):
+    user = await get_user_by_email(email)
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Couldn't Login 1") 
+
+    if not verify_password(password, user.password):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Couldn't Login 2") 
+
+
+    return user
