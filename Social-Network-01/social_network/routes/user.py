@@ -6,7 +6,7 @@ import logging
  
 from social_network.models.user import UserIn
 
-from social_network.security import get_user_by_email, get_password_hash
+from social_network.security import get_user_by_email, get_password_hash, authenticate_user
 
 from social_network.database import database, users_table
 
@@ -34,3 +34,9 @@ async def register(user: UserIn):
     result = await database.execute(query)
 
     return {"msg": "User Created Successfully", "id": result}
+
+@router.post('/token', status_code=200)
+async def login_user(user: UserIn):
+    access_token = await authenticate_user(user.email, user.password)
+
+    return {"access_token": access_token, "token_type": "bearer"}

@@ -60,5 +60,4 @@ async def authenticate_user(email: str, password: str):
     if not verify_password(password, user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Couldn't Login 2") 
 
-
-    return user
+    return create_access_token(user.email)
