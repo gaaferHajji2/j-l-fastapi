@@ -2,11 +2,11 @@ from fastapi import APIRouter, HTTPException, status
 
 import logging
 
-from passlib.hash import pbkdf2_sha256
+# from passlib.hash import pbkdf2_sha256
  
 from social_network.models.user import UserIn
 
-from social_network.security import get_user_by_email
+from social_network.security import get_user_by_email, get_password_hash
 
 from social_network.database import database, users_table
 
@@ -26,7 +26,7 @@ async def register(user: UserIn):
     
     query = users_table.insert().values(
         email=user.email, 
-        password=pbkdf2_sha256.hash(user.password)
+        password=get_password_hash(user.password)
     )
 
     logger.debug(f"The Query For Creating User: {query}")
