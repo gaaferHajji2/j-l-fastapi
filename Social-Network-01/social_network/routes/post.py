@@ -6,6 +6,10 @@ from social_network.database import posts_table, database
 
 from social_network.models.post import UserPost, UserPostIn
 
+from social_network.models.user import User
+
+from social_network.security import get_current_user, oauth2_schema
+
 router = APIRouter()
 
 logger = logging.getLogger(__name__)
