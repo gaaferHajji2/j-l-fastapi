@@ -52,8 +52,12 @@ async def test_create_post(created_post: tuple):
     assert {"body": "J-L-Test-01 Post"}.items() <= created_post[1].items()
 
 @pytest.mark.anyio
-async def test_create_post_without_body(async_client: AsyncClient):
-    response = await async_client.post("/post/", json={})
+async def test_create_post_without_body(async_client: AsyncClient, get_token: str):
+    response = await async_client.post(
+        "/post/", 
+        json={}, 
+        headers={"Authorization": f"Bearer {get_token}"},
+    )
 
     assert response.status_code == 422
 
