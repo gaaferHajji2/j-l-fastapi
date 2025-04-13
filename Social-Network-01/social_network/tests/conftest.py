@@ -67,6 +67,10 @@ async def registered_user(async_client: AsyncClient) -> dict:
 
 @pytest.fixture()
 async def get_token(async_client: AsyncClient, registered_user: dict) -> str:
-    response  = await async_client.post(url='/token', json=registered_user)
+    response  = await async_client.post(url='/user/token', json=registered_user)
+
+    # print("The Status Code Is: ", response.status_code)
+
+    # print("The Json Response Is: ", response.json())
 
     return response.json()["access_token"]

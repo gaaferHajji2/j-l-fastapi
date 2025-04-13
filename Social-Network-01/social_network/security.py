@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 pwd_context = CryptContext(schemes=["bcrypt"])
 
-oauth2_schema = OAuth2PasswordBearer(tokenUrl='token')
+oauth2_schema = OAuth2PasswordBearer(tokenUrl='user/token')
 
 def get_token_expire_minutes():
     return config.EXPIRE_MINUTES
@@ -32,7 +32,7 @@ def create_access_token(email: str) -> str:
 
     jwt_data = {"sub": email, "exp": expire}
 
-    print(f"The Secret Key For Encoding JWT Is: {config.SECRET_KEY}")
+    # print(f"The Secret Key For Encoding JWT Is: {config.SECRET_KEY}")
 
     encoded_jwt = jwt.encode(jwt_data, key=config.SECRET_KEY, algorithm=config.ALGORITHM)
 
@@ -89,7 +89,7 @@ async def get_current_user(token: str):
         if email is None:
             raise credentials_exception
         
-        user = get_user_by_email(email=email)
+        user = await get_user_by_email(email=email)
 
         if user is None:
             raise credentials_exception

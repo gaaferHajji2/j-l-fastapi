@@ -11,7 +11,6 @@ from social_network.security import (
 
 # print("The Name Is: ", __name__)
 
-
 @pytest.mark.anyio
 async def test_get_user(registered_user: dict):
     result = await get_user_by_email(registered_user["email"])
