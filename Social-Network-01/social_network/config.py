@@ -13,8 +13,8 @@ class BaseConfig(BaseSettings):
 class GlobalConfig(BaseConfig):
     DATABASE_URL: Optional[str] = None
     DB_FORCE_ROLL_BACK: bool = False
-    SECRET_KEY: str = None
-    ALGORITHM: str = None
+    SECRET_KEY: str = "Test@123"
+    ALGORITHM: str = "HS256"
     EXPIRE_MINUTES: int = 30
 
 class DevConfig(GlobalConfig):

@@ -1,6 +1,6 @@
 import logging
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 
 from social_network.models.comment import UserCommentIn, UserComment, UserPostWithComments
 
@@ -19,9 +19,9 @@ logger = logging.getLogger(__name__)
 # print(__name__)
 
 @router.post("/", response_model=UserComment, status_code=201)
-async def create_comment(comment: UserCommentIn):
+async def create_comment(comment: UserCommentIn, request: Request):
 
-    current_user: User = get_current_user(oauth2_schema())
+    current_user: User = await get_current_user(await oauth2_schema(request=request))
 
     data = comment.model_dump()
 
