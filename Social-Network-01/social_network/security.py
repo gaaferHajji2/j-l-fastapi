@@ -1,5 +1,7 @@
 from fastapi import HTTPException, status
 
+from fastapi.security import OAuth2PasswordBearer
+
 import logging
 
 from passlib.context import CryptContext
@@ -16,6 +18,8 @@ logger = logging.getLogger(__name__)
 
 pwd_context = CryptContext(schemes=["bcrypt"])
 
+oauth2_schema = OAuth2PasswordBearer(tokenUrl='token')
+
 def get_token_expire_minutes():
     return config.EXPIRE_MINUTES
 
@@ -27,6 +31,8 @@ def create_access_token(email: str) -> str:
     )
 
     jwt_data = {"sub": email, "exp": expire}
+
+    print(f"The Secret Key For Encoding JWT Is: {config.SECRET_KEY}")
 
     encoded_jwt = jwt.encode(jwt_data, key=config.SECRET_KEY, algorithm=config.ALGORITHM)
 
