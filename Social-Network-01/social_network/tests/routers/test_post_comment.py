@@ -2,8 +2,12 @@ import pytest
 
 from httpx import AsyncClient
 
-async def create_post(body: str, async_client: AsyncClient):
-    response = await async_client.post(url='/post/', json={"body": body})
+async def create_post(body: str, async_client: AsyncClient, get_token: str):
+    response = await async_client.post(
+        url='/post/', 
+        json={"body": body}, 
+        headers={"Authorization": f"Bearer {get_token}"},
+    )
 
     # For Debugging Only
     # print("The Status Code Is: ", response.status_code)
@@ -11,8 +15,12 @@ async def create_post(body: str, async_client: AsyncClient):
 
     return response.status_code, response.json()
 
-async def create_comment(body: str, post_id: int, async_client: AsyncClient):
-    response = await async_client.post(url='/comment/', json={"body": body, "post_id": post_id})
+async def create_comment(body: str, post_id: int, async_client: AsyncClient, get_token: str):
+    response = await async_client.post(
+        url='/comment/', 
+        json={"body": body, "post_id": post_id},
+        headers={"Authorization": f"Bearer {get_token}"},
+    )
 
     # For Debugging Only
     # print("The Status Code Is: ", response.status_code)
