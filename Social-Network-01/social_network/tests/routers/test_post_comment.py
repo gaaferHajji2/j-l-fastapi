@@ -30,12 +30,21 @@ async def create_comment(body: str, post_id: int, async_client: AsyncClient, get
 
 
 @pytest.fixture()
-async def created_post(async_client: AsyncClient):
-    return await create_post("J-L-Test-01 Post", async_client=async_client)
+async def created_post(async_client: AsyncClient, get_token: str):
+    return await create_post(
+        "J-L-Test-01 Post", 
+        async_client=async_client, 
+        get_token=get_token
+    )
 
 @pytest.fixture()
-async def created_comment(async_client: AsyncClient):
-    return await create_comment("J-L-Test-01 Comment", 1, async_client=async_client)
+async def created_comment(async_client: AsyncClient, get_token: str):
+    return await create_comment(
+        "J-L-Test-01 Comment", 
+        1, 
+        async_client=async_client, 
+        get_token=get_token
+    )
 
 @pytest.mark.anyio
 async def test_create_post(created_post: tuple):
