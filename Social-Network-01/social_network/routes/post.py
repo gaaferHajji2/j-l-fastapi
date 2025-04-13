@@ -31,6 +31,10 @@ async def find_post(post_id: int):
 
 @router.post("/", response_model=UserPost, status_code=201)
 async def create_post(post: UserPostIn):
+
+    # In This Way We Protect The Endpoint From Un-Authenticated Requests
+    current_user: User = get_current_user(oauth2_schema())
+
     data = post.model_dump()
 
     query = posts_table.insert().values(data)

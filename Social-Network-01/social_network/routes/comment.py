@@ -8,6 +8,10 @@ from social_network.routes.post import find_post
 
 from social_network.database import comments_table, database
 
+from social_network.models.user import User
+
+from social_network.security import get_current_user, oauth2_schema
+
 router = APIRouter()
 
 logger = logging.getLogger(__name__)
@@ -16,6 +20,9 @@ logger = logging.getLogger(__name__)
 
 @router.post("/", response_model=UserComment, status_code=201)
 async def create_comment(comment: UserCommentIn):
+
+    current_user: User = get_current_user(oauth2_schema())
+
     data = comment.model_dump()
 
     post = await find_post(data['post_id'])
