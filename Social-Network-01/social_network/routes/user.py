@@ -45,14 +45,14 @@ async def register(user: UserIn):
 
 #     return {"access_token": access_token, "token_type": "bearer"}
 
-@router.post('/token', status_code=200)
-async def login_user(
-    username: Annotated[str, Form()],
-    password: Annotated[str, Form()], 
-    grant_type: Annotated[str, Form()]):
-    access_token = await authenticate_user(username, password)
+# @router.post('/token', status_code=200)
+# async def login_user(
+#     username: Annotated[str, Form()],
+#     password: Annotated[str, Form()], 
+#     grant_type: Annotated[str, Form()]):
+#     access_token = await authenticate_user(username, password)
 
-    return {"access_token": access_token, "token_type": "bearer"}
+#     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post('/token', status_code=200)
 async def login_user(form_data:  Annotated[OAuth2PasswordRequestForm, Depends()]):
