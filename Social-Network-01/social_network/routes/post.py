@@ -37,7 +37,7 @@ async def create_post(post: UserPostIn, current_user: Annotated[User, Depends(ge
     # In This Way We Protect The Endpoint From Un-Authenticated Requests
     # current_user: User = await get_current_user(await oauth2_schema(request=request))
 
-    data = post.model_dump()
+    data = {**post.model_dump(), "user_id": current_user.id}
 
     query = posts_table.insert().values(data)
 

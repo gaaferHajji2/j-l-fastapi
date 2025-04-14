@@ -25,7 +25,7 @@ async def create_comment(comment: UserCommentIn, current_user: Annotated[User, D
 
     # current_user: User = await get_current_user(await oauth2_schema(request=request))
 
-    data = comment.model_dump()
+    data = {**comment.model_dump(), "user_id": current_user.id}
 
     post = await find_post(data['post_id'])
 
