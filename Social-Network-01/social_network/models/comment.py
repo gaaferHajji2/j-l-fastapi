@@ -12,6 +12,8 @@ class UserComment(UserCommentIn):
 
     id: int
 
+    user_id: int
+
 class UserPostWithComments(BaseModel):
 
     post: UserPost

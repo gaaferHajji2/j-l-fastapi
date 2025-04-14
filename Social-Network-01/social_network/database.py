@@ -12,6 +12,7 @@ posts_table = sqlalchemy.Table(
     metadata,
     sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
     sqlalchemy.Column("body", sqlalchemy.String),
+    sqlalchemy.Column("user_id", sqlalchemy.ForeignKey("users.id"), nullable=False),
 )
 
 ### Create The Comments Table ###
@@ -23,6 +24,7 @@ comments_table = sqlalchemy.Table(
     # Here We Don't Need To Tell The Type Of Column, Because It's ForeignKey
     # So It Will Give It The Same Type Of Id Of Posts Table.
     sqlalchemy.Column("post_id", sqlalchemy.ForeignKey("posts.id"), nullable=False, ),
+    sqlalchemy.Column("user_id", sqlalchemy.ForeignKey("users.id"), nullable=False),
 )
 
 ### Create The Users Table ###
