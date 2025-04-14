@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 pwd_context = CryptContext(schemes=["bcrypt"])
 
-oauth2_schema = OAuth2PasswordBearer(tokenUrl='user/token')
+oauth2_schema = OAuth2PasswordBearer(tokenUrl='/user/token')
 
 def get_token_expire_minutes():
     return config.EXPIRE_MINUTES
