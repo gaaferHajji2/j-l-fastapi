@@ -1,6 +1,8 @@
 import logging
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
+
+from typing import Annotated
 
 from social_network.database import posts_table, database
 
@@ -30,10 +32,10 @@ async def find_post(post_id: int):
     return await database.fetch_one(query)
 
 @router.post("/", response_model=UserPost, status_code=201)
-async def create_post(post: UserPostIn, request: Request):
+async def create_post(post: UserPostIn, current_user: Annotated[User, Depends(get_current_user)]):
 
     # In This Way We Protect The Endpoint From Un-Authenticated Requests
-    current_user: User = await get_current_user(await oauth2_schema(request=request))
+    # current_user: User = await get_current_user(await oauth2_schema(request=request))
 
     data = post.model_dump()
 

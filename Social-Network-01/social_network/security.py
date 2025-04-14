@@ -82,7 +82,9 @@ async def authenticate_user(email: str, password: str):
 
     return create_access_token(user.email)
 
-async def get_current_user(token: str):
+# Annotated[str, Depends(oauth2_schema)] --> That Means The Token Type Is String
+# And Will Be Populated From oauth2_schema
+async def get_current_user(token: Annotated[str, Depends(oauth2_schema)]):
     try:
         payload = jwt.decode(token=token, key=config.SECRET_KEY, algorithms=[config.ALGORITHM])
 
