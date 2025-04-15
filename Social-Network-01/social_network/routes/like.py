@@ -32,7 +32,7 @@ async def like_post(like: PostLikeIn, current_user: Annotated[User, Depends(get_
     
     data = {**like.model_dump(), "user_id": current_user.id}
 
-    query = users_table.insert().values(data)
+    query = likes_table.insert().values(data)
 
     logger.debug(f"The Query For Creating Like: {query}")
 
