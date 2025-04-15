@@ -36,7 +36,7 @@ users_table = sqlalchemy.Table(
     sqlalchemy.Column("password", sqlalchemy.String, nullable=False),
 )
 
-### Create The Comments Table ###
+### Create The Likes Table ###
 likes_table = sqlalchemy.Table(
     "likes",
     metadata,

@@ -30,9 +30,9 @@ select_post_and_likes = (
     sqlalchemy.select(
         posts_table, 
         # .label('likes') --> Is Similar To Use: AS-Keyword
-        sqlalchemy.func.count(likes_table.c.id).labale("likes"),
+        sqlalchemy.func.count(likes_table.c.id).label("likes"),
     
-)\
+    )\
     .select_from(posts_table.outerjoin(likes_table))\
     .group_by(posts_table.c.id)
 )
