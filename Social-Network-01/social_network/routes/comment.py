@@ -83,6 +83,8 @@ async def get_post_with_comments(post_id: int):
 
     query = select_post_and_likes.where(posts_table.c.id == post_id)
 
+    logger.debug(f"The Query For Getting Post, With Likes And Comments: {query}")
+
     post = await database.fetch_one(query)
 
     if post is None:
