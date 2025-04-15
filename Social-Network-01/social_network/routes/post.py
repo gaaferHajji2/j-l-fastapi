@@ -26,16 +26,7 @@ logger = logging.getLogger(__name__)
 
 # post_table = {}
 
-select_post_and_likes = (
-    sqlalchemy.select(
-        posts_table, 
-        # .label('likes') --> Is Similar To Use: AS-Keyword
-        sqlalchemy.func.count(likes_table.c.id).label("likes"),
-    
-    )\
-    .select_from(posts_table.outerjoin(likes_table))\
-    .group_by(posts_table.c.id)
-)
+
 
 async def find_post(post_id: int):
     query = posts_table.select().where(posts_table.c.id == post_id)
