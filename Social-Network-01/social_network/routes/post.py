@@ -4,7 +4,9 @@ from fastapi import APIRouter, Request, Depends
 
 from typing import Annotated
 
-from social_network.database import posts_table, database
+import sqlalchemy
+
+from social_network.database import posts_table, likes_table, database
 
 from social_network.models.post import UserPost, UserPostIn
 
@@ -23,6 +25,17 @@ logger = logging.getLogger(__name__)
 #     return {"Message": "Hello"}
 
 # post_table = {}
+
+select_post_and_likes = (
+    sqlalchemy.select(
+        posts_table, 
+        # .label('likes') --> Is Similar To Use: AS-Keyword
+        sqlalchemy.func.count(likes_table.c.id).labale("likes"),
+    
+)\
+    .select_from(posts_table.outerjoin(likes_table))\
+    .group_by(posts_table.c.id)
+)
 
 async def find_post(post_id: int):
     query = posts_table.select().where(posts_table.c.id == post_id)
