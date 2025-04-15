@@ -1,6 +1,8 @@
 from pydantic import BaseModel, ConfigDict
 
-from social_network.models.post import UserPost
+from social_network.models.post import UserPost, UserPostWithLikes
+
+
 
 class UserCommentIn(BaseModel):
     body: str
@@ -16,5 +18,5 @@ class UserComment(UserCommentIn):
 
 class UserPostWithComments(BaseModel):
 
-    post: UserPost
+    post: UserPostWithLikes
     comments: list[UserComment]

@@ -12,3 +12,8 @@ class UserPost(UserPostIn):
     id: int
 
     user_id: int
+
+class UserPostWithLikes(UserPost):
+    model_config = ConfigDict(from_attributes=True)
+
+    likes: int
