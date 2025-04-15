@@ -11,6 +11,7 @@ from asgi_correlation_id import CorrelationIdMiddleware
 from social_network.routes.post import router as post_router
 from social_network.routes.comment import router as comment_router
 from social_network.routes.user import router as user_router
+from social_network.routes.like import router as like_router
 
 from social_network.logging_conf import configure_logging
 
@@ -42,6 +43,8 @@ app.include_router(post_router, prefix="/post")
 app.include_router(comment_router, prefix="/comment")
 
 app.include_router(user_router, prefix='/user')
+
+app.include_router(like_router)
 
 @app.exception_handler(HTTPException) # In This Way We Can Pass:
 # The Exception Class OR The Status Code That We Want To Handle
