@@ -78,9 +78,11 @@ async def get_all_posts(sorting: PostSorting = PostSorting.new):
     # return post_table.values()
     # OR We Can Use
 
-    if sorting.new == PostSorting.new:
+    print(f"The Sorting Is: {sorting}")
+
+    if sorting == PostSorting.new:
         query = select_post_and_likes.order_by(posts_table.c.id.desc())
-    elif sorting.old == PostSorting.old:
+    elif sorting == PostSorting.old:
         query = select_post_and_likes.order_by(posts_table.c.id.asc())
     else:
         query = select_post_and_likes.order_by(sqlalchemy.desc("likes"))

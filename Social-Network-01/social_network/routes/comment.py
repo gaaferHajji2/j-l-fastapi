@@ -1,6 +1,6 @@
 import logging
 
-from fastapi import APIRouter, HTTPException, Request, Depends
+from fastapi import APIRouter, HTTPException, Depends
 
 from typing import Annotated
 
@@ -14,7 +14,7 @@ from social_network.database import comments_table, posts_table, likes_table, da
 
 from social_network.models.user import User
 
-from social_network.security import get_current_user, oauth2_schema
+from social_network.security import get_current_user
 
 router = APIRouter()
 
