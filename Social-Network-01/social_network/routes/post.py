@@ -66,9 +66,15 @@ async def create_post(post: UserPostIn, current_user: Annotated[User, Depends(ge
 
     return  {**data, "id": last_id}
 
+class PostSorting(str, Enum):
+    new = "new"
+
+    old = "old"
+
+    most_likes = "most_likes"
 
 @router.get("/", response_model=list[UserPostWithLikes])
-async def get_all_posts():
+async def get_all_posts(sorting: PostSorting = PostSorting.new):
     # return post_table.values()
     # OR We Can Use
     query = select_post_and_likes.order_by(sqlalchemy.desc("likes"))
