@@ -27,6 +27,8 @@ class GlobalConfig(BaseConfig):
 
     API_TOKEN: str = ""
 
+    API_URL: str = ""
+
 class DevConfig(GlobalConfig):
     model_config = SettingsConfigDict(env_prefix='DEV_')
 
