@@ -4,7 +4,11 @@ from fastapi import APIRouter, Depends
 
 from typing import Annotated
 
-from social_network.database import posts_table, database
+from enum import Enum
+
+import sqlalchemy
+
+from social_network.database import posts_table, likes_table, database
 
 from social_network.models.post import UserPost, UserPostIn, UserPostWithLikes
 
@@ -12,7 +16,6 @@ from social_network.models.user import User
 
 from social_network.security import get_current_user
 
-from enum import Enum
 
 router = APIRouter()
 
@@ -26,6 +29,17 @@ logger = logging.getLogger(__name__)
 
 # post_table = {}
 
+
+select_post_and_likes = (
+    sqlalchemy.select(
+        posts_table, 
+        # .label('likes') --> Is Similar To Use: AS-Keyword
+        sqlalchemy.func.count(likes_table.c.id).label("likes"),
+    
+    )\
+    .select_from(posts_table.outerjoin(likes_table))\
+    .group_by(posts_table.c.id)
+)
 
 
 async def find_post(post_id: int):
@@ -53,11 +67,11 @@ async def create_post(post: UserPostIn, current_user: Annotated[User, Depends(ge
     return  {**data, "id": last_id}
 
 
-@router.get("/", response_model=list[UserPost])
+@router.get("/", response_model=list[UserPostWithLikes])
 async def get_all_posts():
     # return post_table.values()
     # OR We Can Use
-    query = posts_table.select()
+    query = select_post_and_likes.order_by(sqlalchemy.desc("likes"))
 
     logger.debug(f"The Query For Get All Posts Is: {query}")
 
