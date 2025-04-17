@@ -25,6 +25,8 @@ class GlobalConfig(BaseConfig):
 
     HOST_NAME: str = ""
 
+    API_TOKEN: str = ""
+
 class DevConfig(GlobalConfig):
     model_config = SettingsConfigDict(env_prefix='DEV_')
 
