@@ -12,10 +12,18 @@ class BaseConfig(BaseSettings):
 
 class GlobalConfig(BaseConfig):
     DATABASE_URL: Optional[str] = None
+    
     DB_FORCE_ROLL_BACK: bool = False
+    
     SECRET_KEY: str = "Test@123"
+    
     ALGORITHM: str = "HS256"
+    
     EXPIRE_MINUTES: int = 30
+
+    API_KEY: str = ""
+
+    HOST_NAME: str = ""
 
 class DevConfig(GlobalConfig):
     model_config = SettingsConfigDict(env_prefix='DEV_')
