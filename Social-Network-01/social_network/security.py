@@ -111,17 +111,10 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_schema)]):
         if email is None:
             raise credentials_exception
         
-        user = await get_user_by_email(email=email)
-
-        if user is None:
-            raise credentials_exception
-        
         token_type = payload.get('type')
 
         if token_type is None or token_type != 'access':
             raise credentials_exception
-        
-        return user
     
     except ExpiredSignatureError as e:
         raise HTTPException(
@@ -133,3 +126,9 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_schema)]):
         ) from e
     except JWTError as e:
         raise credentials_exception from e
+    
+    user = await get_user_by_email(email=email)
+
+    if user is None:
+        raise credentials_exception
+    return user
