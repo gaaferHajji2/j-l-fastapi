@@ -77,23 +77,25 @@ async def get_user_by_email(email: str):
     if result:
         return result
 
-credentials_exception = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED, 
-    detail="Couldn't Login",
-    headers={
-        "WWW-Authenticate": "Bearer",
-    }
-)
+def create_credentials_exception(detail: str) -> HTTPException:
+    return HTTPException(
+        status_code = status.HTTP_401_UNAUTHORIZED, 
+        detail = detail,
+        headers = {
+            "WWW-Authenticate": "Bearer",
+        }
+    )
 
 async def authenticate_user(email: str, password: str):
     user = await get_user_by_email(email)
 
     if not user:
-        raise credentials_exception 
+        raise create_credentials_exception(detail="User Not Found") 
 
     #try:
     if not verify_password(password, user.password):
-        raise credentials_exception
+        raise create_credentials_exception(detail="Password Hash Not Verified")
+    
     # except Exception as e:
     #         logger.error(f"The Error In Verifying Password Is: {e.__str__()}")
     #         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Couldn't Login 2")
@@ -105,25 +107,22 @@ def get_subject_for_token_type(token: str, token_type: Literal['access', 'confir
         payload = jwt.decode(token=token, key=config.SECRET_KEY, algorithms=[config.ALGORITHM])
     
     except ExpiredSignatureError as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, 
+        raise create_credentials_exception(
             detail="Token Has Been Expired",
-            headers={
-                "WWW-Authenticate": "Bearer",
-            },
         ) from e
+
     except JWTError as e:
-        raise credentials_exception from e
+        raise create_credentials_exception(detail="Invalid Token") from e
     
     email = payload.get('sub', None)
 
     if email is None:
-        raise credentials_exception
+        raise create_credentials_exception(detail="Email Not Found")
         
     t1 = payload.get('type')
 
     if t1 is None or t1 != token_type:
-        raise credentials_exception
+        raise create_credentials_exception(detail="Invalid Type For Token")
         
     return email
     
@@ -136,5 +135,5 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_schema)]):
     user = await get_user_by_email(email=email)
 
     if user is None:
-        raise credentials_exception
+        raise create_credentials_exception(detail="User Not Found")
     return user
