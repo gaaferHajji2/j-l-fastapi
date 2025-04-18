@@ -19,7 +19,9 @@ class GlobalConfig(BaseConfig):
     
     ALGORITHM: str = "HS256"
     
-    EXPIRE_MINUTES: int = 30
+    ACCESS_EXPIRE_MINUTES: int = 30
+
+    CONFIRM_EXPIRE_MINUTES: int = 720
 
     API_KEY: str = ""
 

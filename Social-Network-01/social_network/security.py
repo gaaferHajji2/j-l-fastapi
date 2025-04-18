@@ -22,14 +22,17 @@ pwd_context = CryptContext(schemes=["bcrypt"])
 
 oauth2_schema = OAuth2PasswordBearer(tokenUrl='/user/token')
 
-def get_token_expire_minutes():
-    return config.EXPIRE_MINUTES
+def get_access_token_expire_minutes():
+    return config.ACCESS_EXPIRE_MINUTES
+
+def get_confirm_token_expire_minutes():
+    return config.CONFIRM_EXPIRE_MINUTES
 
 def create_access_token(email: str) -> str:
     logger.debug("Creating Access Token", extra={"email": email})
 
     expire = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
-        minutes=get_token_expire_minutes(),
+        minutes=get_access_token_expire_minutes(),
     )
 
     jwt_data = {"sub": email, "exp": expire}
