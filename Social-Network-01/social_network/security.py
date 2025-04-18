@@ -35,7 +35,7 @@ def create_access_token(email: str) -> str:
         minutes=get_access_token_expire_minutes(),
     )
 
-    jwt_data = {"sub": email, "exp": expire}
+    jwt_data = {"sub": email, "exp": expire, "type": "Access"}
 
     # print(f"The Secret Key For Encoding JWT Is: {config.SECRET_KEY}")
 
