@@ -72,4 +72,10 @@ async def login_user(form_data: Annotated[OAuth2PasswordRequestForm, Depends()])
 async def confirm_user_email(token: str):
     email = get_subject_for_token_type(token=token, token_type='confirmation')
 
-    
+    query = users_table.update().where(users_table.c.email == email).values(confirmed=True)
+
+    logger.debug(f"The Query For User Confirmation Is: {query}")
+
+    await database.execute(query)
+
+    return { "detail": "User Confirmed" }
