@@ -36,7 +36,8 @@ async def register(user: UserIn, request: Request):
         )
 
     query = users_table.insert().values(
-        email=user.email, password=get_password_hash(user.password)
+        email=user.email, password=get_password_hash(user.password),
+        confirmed=False,
     )
 
     logger.debug(f"The Query For Creating User: {query}")
