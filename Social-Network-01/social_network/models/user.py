@@ -5,5 +5,7 @@ class User(BaseModel):
 
     email: str
 
+    confirmed: bool = False
+
 class UserIn(User):
     password: str
