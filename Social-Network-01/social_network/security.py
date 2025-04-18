@@ -43,6 +43,21 @@ def create_access_token(email: str) -> str:
 
     return encoded_jwt
 
+def create_confirm_token(email: str) -> str:
+    logger.debug("Creating Confirm Token", extra={"email": email})
+
+    expire = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
+        minutes=get_confirm_token_expire_minutes(),
+    )
+
+    jwt_data = {"sub": email, "exp": expire, "type": "confirmation"}
+
+    # print(f"The Secret Key For Encoding JWT Is: {config.SECRET_KEY}")
+
+    encoded_jwt = jwt.encode(jwt_data, key=config.SECRET_KEY, algorithm=config.ALGORITHM)
+
+    return encoded_jwt
+
 def get_password_hash(password: str):
     return pwd_context.hash(password)
 
@@ -99,6 +114,11 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_schema)]):
         user = await get_user_by_email(email=email)
 
         if user is None:
+            raise credentials_exception
+        
+        token_type = payload.get('type')
+
+        if token_type is None or token_type != 'access':
             raise credentials_exception
         
         return user
