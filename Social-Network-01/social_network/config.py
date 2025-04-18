@@ -29,6 +29,14 @@ class GlobalConfig(BaseConfig):
 
     API_URL: str = ""
 
+    USERNAME: str = ""
+
+    PASSWORD: str = ""
+
+    EMAIL_HOST: str = ""
+
+    EMAIL_PORT: str = ""
+
 class DevConfig(GlobalConfig):
     model_config = SettingsConfigDict(env_prefix='DEV_')
 
