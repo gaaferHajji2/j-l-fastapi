@@ -2,7 +2,7 @@ from fastapi import Depends, HTTPException, status
 
 from fastapi.security import OAuth2PasswordBearer
 
-from typing import Annotated
+from typing import Annotated, Literal
 
 import logging
 
@@ -100,21 +100,9 @@ async def authenticate_user(email: str, password: str):
 
     return create_access_token(user.email)
 
-# Annotated[str, Depends(oauth2_schema)] --> That Means The Token Type Is String
-# And Will Be Populated From oauth2_schema
-async def get_current_user(token: Annotated[str, Depends(oauth2_schema)]):
+def get_subject_for_token_type(token: str, token_type: Literal['access', 'confirmation']) -> str:
     try:
         payload = jwt.decode(token=token, key=config.SECRET_KEY, algorithms=[config.ALGORITHM])
-
-        email = payload.get('sub', None)
-
-        if email is None:
-            raise credentials_exception
-        
-        token_type = payload.get('type')
-
-        if token_type is None or token_type != 'access':
-            raise credentials_exception
     
     except ExpiredSignatureError as e:
         raise HTTPException(
@@ -126,6 +114,24 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_schema)]):
         ) from e
     except JWTError as e:
         raise credentials_exception from e
+    
+    email = payload.get('sub', None)
+
+    if email is None:
+        raise credentials_exception
+        
+    t1 = payload.get('type')
+
+    if t1 is None or t1 != token_type:
+        raise credentials_exception
+        
+    return email
+    
+# Annotated[str, Depends(oauth2_schema)] --> That Means The Token Type Is String
+# And Will Be Populated From oauth2_schema
+async def get_current_user(token: Annotated[str, Depends(oauth2_schema)]):
+    
+    email = get_subject_for_token_type(token=token, token_type='access')
     
     user = await get_user_by_email(email=email)
 
