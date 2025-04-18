@@ -94,7 +94,7 @@ async def authenticate_user(email: str, password: str):
 
     #try:
     if not verify_password(password, user.password):
-        raise create_credentials_exception(detail="Password Hash Not Verified")
+        raise create_credentials_exception(detail="Invalid Email OR Password")
     
     # except Exception as e:
     #         logger.error(f"The Error In Verifying Password Is: {e.__str__()}")
@@ -135,5 +135,5 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_schema)]):
     user = await get_user_by_email(email=email)
 
     if user is None:
-        raise create_credentials_exception(detail="User Not Found")
+        raise create_credentials_exception(detail="Invalid Email OR Password")
     return user
