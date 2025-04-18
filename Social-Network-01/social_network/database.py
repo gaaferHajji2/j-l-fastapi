@@ -34,6 +34,7 @@ users_table = sqlalchemy.Table(
     sqlalchemy.Column("id", sqlalchemy.Integer, primary_key = True),
     sqlalchemy.Column("email", sqlalchemy.String(50), unique=True, nullable=False),
     sqlalchemy.Column("password", sqlalchemy.String, nullable=False),
+    sqlalchemy.Column("confirmed", sqlalchemy.Boolean, default=False),
 )
 
 ### Create The Likes Table ###
