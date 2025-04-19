@@ -36,7 +36,7 @@ def create_access_token(email: str) -> str:
         minutes=get_access_token_expire_minutes(),
     )
 
-    jwt_data = {"sub": email, "exp": expire, "type": "Access"}
+    jwt_data = {"sub": email, "exp": expire, "type": "access"}
 
     # print(f"The Secret Key For Encoding JWT Is: {config.SECRET_KEY}")
 
@@ -125,12 +125,12 @@ def get_subject_for_token_type(token: str, token_type: Literal['access', 'confir
         
     t1 = payload.get('type')
 
-    print("*#"*15)
-    print(f"The T1 Value Is: {t1}")
-    print(f"The Token Type Is: {token_type}")
-    print("*#"*15)
+    # print("*#"*15)
+    # print(f"The T1 Value Is: {t1}")
+    # print(f"The Token Type Is: {token_type}")
+    # print("*#"*15)
 
-    if t1 is None or t1 != token_type:
+    if t1 is None or t1.lower() != token_type.lower():
         raise create_credentials_exception(detail="Invalid Type For Token")
         
     return email
