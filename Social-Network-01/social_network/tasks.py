@@ -12,11 +12,19 @@ async def send_simple_email(to: str, subject: str, body: str, from_: str):
     sender = f"Private Person <{from_}>"
     receiver = f"A Test User <{to}>"
 
+    logger.debug(f"The Sender Is: {sender}")
+
+    logger.debug(f"The Receiver Is: {receiver}")
+
+    logger.debug(f"The Subject Is: {subject}")
+
+    logger.debug(f"The Body Is: {body}")
+
     message = f"""\
         Subject: {subject}
         To: {receiver}
         From: {sender}
-
+        Please Confirm Your Email Address:
         {body}"""
     with smtp.SMTP(config.EMAIL_HOST, config.EMAIL_PORT) as server:
 
@@ -26,4 +34,14 @@ async def send_simple_email(to: str, subject: str, body: str, from_: str):
 
         server.login(config.USERNAME, config.PASSWORD)
 
-        server.sendmail(sender, receiver, message)
+        result = server.sendmail(sender, receiver, message)
+
+        logger.debug(f"The Result Of Sending Email Is: {result}")
+
+async def send_user_registeration_email(email: str, confirmation_url: str):
+    return await send_simple_email(
+        to=email,
+        subject="Please Confirm Your Email Address",
+        body=f"Please Confirm Your Email Address Using This Link: {confirmation_url}",
+        from_="gaafer.hajji1995@gmail.com"
+    )
