@@ -16,8 +16,6 @@ from social_network.security import (
     authenticate_user,
     get_subject_for_token_type,
     create_confirm_token,
-
-    create_access_token,
 )
 
 from social_network.database import database, users_table
@@ -51,7 +49,7 @@ async def register(user: UserIn, request: Request):
         "id": result,
         "confirmation_url": request.url_for(
             "confirm_user_email",
-            token=create_access_token(user.email)
+            token=create_confirm_token(user.email)
         )
     }
 

@@ -125,6 +125,11 @@ def get_subject_for_token_type(token: str, token_type: Literal['access', 'confir
         
     t1 = payload.get('type')
 
+    print("*#"*15)
+    print(f"The T1 Value Is: {t1}")
+    print(f"The Token Type Is: {token_type}")
+    print("*#"*15)
+
     if t1 is None or t1 != token_type:
         raise create_credentials_exception(detail="Invalid Type For Token")
         
