@@ -54,11 +54,11 @@ async def create_post(post: UserPostIn, current_user: Annotated[User, Depends(ge
     # In This Way We Protect The Endpoint From Un-Authenticated Requests
     # current_user: User = await get_current_user(await oauth2_schema(request=request))
 
-    if current_user.confirmed is None or not current_user.confirmed:
-        raise HTTPException(
-            status_code=403,
-            detail="Can't Create Post, Please Confirm URL"
-        )
+    # if current_user.confirmed is None or not current_user.confirmed:
+    #     raise HTTPException(
+    #         status_code=403,
+    #         detail="Can't Create Post, Please Confirm URL"
+    #     )
 
     data = {**post.model_dump(), "user_id": current_user.id}
 

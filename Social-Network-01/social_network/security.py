@@ -15,6 +15,7 @@ from jose import jwt, ExpiredSignatureError, JWTError
 from social_network.database import database, users_table
 
 from social_network.config import config
+from social_network.models.user import User
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +65,7 @@ def get_password_hash(password: str):
 def verify_password(password: str, hash: str):
     return pwd_context.verify(password, hash)
 
-async def get_user_by_email(email: str):
+async def get_user_by_email(email: str) -> User:
 
     logger.debug("Fetching Users Data By Email", extra={"email": email})
 
@@ -99,6 +100,9 @@ async def authenticate_user(email: str, password: str):
     # except Exception as e:
     #         logger.error(f"The Error In Verifying Password Is: {e.__str__()}")
     #         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Couldn't Login 2")
+
+    if user.confirmed is None or not user.confirmed:
+        raise create_credentials_exception(detail="You Must Confirm URL First")
 
     return create_access_token(user.email)
 
