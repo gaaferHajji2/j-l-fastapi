@@ -39,6 +39,12 @@ class GlobalConfig(BaseConfig):
 
     EMAIL_PORT: str = ""
 
+    B2_KEY_ID: Optional[str] = ""
+
+    B2_APPLICATION_KEY: Optional[str] = ""
+
+    B2_BUCKET_NAME: Optional[str] = ""
+
 class DevConfig(GlobalConfig):
     model_config = SettingsConfigDict(env_prefix='DEV_')
 
