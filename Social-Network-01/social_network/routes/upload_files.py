@@ -13,7 +13,7 @@ ALLOWED_FILE_TYPES = {"image/jpeg", "image/png", "application/pdf"}  # Allowed M
 # Ensure upload directory exists
 Path(UPLOAD_DIRECTORY).mkdir(parents=True, exist_ok=True)
 
-@router.post('/upload/')
+@router.post('/upload/', status_code=201)
 async def upload_file(file: UploadFile = File(...)):
     try:
         # Validate file size
