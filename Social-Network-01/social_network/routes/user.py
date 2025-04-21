@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Request, Depends
+from fastapi import APIRouter, BackgroundTasks, HTTPException, status, Request, Depends
 
 from fastapi.security import OAuth2PasswordRequestForm
 
@@ -20,13 +20,15 @@ from social_network.security import (
 
 from social_network.database import database, users_table
 
+from social_network.tasks import send_user_registeration_email
+
 router = APIRouter()
 
 logger = logging.getLogger(__name__)
 
 
 @router.post("/register", status_code=201)
-async def register(user: UserIn, request: Request):
+async def register(user: UserIn, background_tasks: BackgroundTasks, request: Request):
     t1 = await get_user_by_email(user.email)
 
     if t1:
@@ -43,6 +45,17 @@ async def register(user: UserIn, request: Request):
     logger.debug(f"The Query For Creating User: {query}")
 
     result = await database.execute(query)
+
+    background_tasks.add_task(
+        send_user_registeration_email,
+        email=user.email, 
+        confirmation_url=str(
+            request.url_for(
+                "confirm_user_email",
+                token=create_confirm_token(user.email)
+            )
+        )
+    )
 
     return {
         "msg": "User Created Successfully", 

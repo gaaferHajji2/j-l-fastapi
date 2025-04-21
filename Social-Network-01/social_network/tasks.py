@@ -1,12 +1,12 @@
 import logging
 
-import httpx
-
 from social_network.config import config
 
 import smtplib as smtp
 
 logger = logging.getLogger(__name__)
+
+# print(__name__)
 
 async def send_simple_email(to: str, subject: str, body: str, from_: str):
     sender = f"Private Person <{from_}>"
@@ -21,11 +21,15 @@ async def send_simple_email(to: str, subject: str, body: str, from_: str):
     logger.debug(f"The Body Is: {body}")
 
     message = f"""\
-        Subject: {subject}
-        To: {receiver}
-        From: {sender}
-        Please Confirm Your Email Address:
-        {body}"""
+Subject: {subject}
+To: {receiver}
+From: {sender}
+
+{body}
+"""
+    
+    logger.debug(f"The Complete Msg Is: {message}")
+
     with smtp.SMTP(config.EMAIL_HOST, config.EMAIL_PORT) as server:
 
         server.ehlo()
