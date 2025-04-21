@@ -40,8 +40,8 @@ async def upload_file(file: UploadFile = File(...)):
         
         # Save file asynchronously
         async with aiofiles.open(file_path, 'wb') as out_file:
-            # This Will Read Only 1KB
-            while content := await file.read(1024):  # Read in chunks
+            # This Will Read Only 50KB
+            while content := await file.read(1024*50):  # Read in chunks
                 await out_file.write(content)
         
         return JSONResponse(
