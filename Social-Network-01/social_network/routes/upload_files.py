@@ -49,10 +49,14 @@ async def upload_file(file: UploadFile = File(...)):
             content={
                 "message": "File uploaded successfully",
                 "file_path": file_path,
-                "file_size": file_size,
+                "file_size": str((file_size/1024/1024).__round__(2)) + " MB",
                 "content_type": file.content_type
             }
         )
     except Exception as e:
+
+        if  isinstance(e, HTTPException) :
+            raise HTTPException(status_code=e.status_code, detail=e.detail)
+
         raise HTTPException(status_code=500, detail=str(e))
 
