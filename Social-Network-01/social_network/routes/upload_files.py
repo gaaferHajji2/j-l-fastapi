@@ -3,7 +3,6 @@ from fastapi.responses import JSONResponse
 import aiofiles
 import os
 from pathlib import Path
-from typing import Optional
 
 router = APIRouter()
 
