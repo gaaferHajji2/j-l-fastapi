@@ -6,7 +6,7 @@ import logging
 
 from social_network.security import get_current_user
 
-from social_network.database import likes_table, posts_table, users_table, database
+from social_network.database import likes_table, database
 
 from social_network.models.user import User
 
