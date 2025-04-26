@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, ConfigDict
 
 # This Is For Our Request Content From User
@@ -12,6 +14,8 @@ class UserPost(UserPostIn):
     id: int
 
     user_id: int
+
+    image_url: Optional[str] = None
 
 class UserPostWithLikes(UserPost):
     model_config = ConfigDict(from_attributes=True)
