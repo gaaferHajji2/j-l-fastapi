@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 
-from social_network.models.post import UserPost, UserPostWithLikes
+from social_network.models.post import UserPostWithLikes
 
 
 
