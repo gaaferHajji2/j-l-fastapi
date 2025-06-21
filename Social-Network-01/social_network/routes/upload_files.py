@@ -7,7 +7,7 @@ from pathlib import Path
 router = APIRouter()
 
 UPLOAD_DIRECTORY = "uploads"  # Directory where files will be saved
-MAX_FILE_SIZE = 1024 * 1024 * 2  # 10 MB limit
+MAX_FILE_SIZE = 1024 * 1024 * 2  # 2 MB limit
 ALLOWED_FILE_TYPES = {"image/jpeg", "image/png", "application/pdf"}  # Allowed MIME types
 
 # Ensure upload directory exists
