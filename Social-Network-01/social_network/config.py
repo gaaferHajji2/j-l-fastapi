@@ -49,7 +49,7 @@ class DevConfig(GlobalConfig):
     model_config = SettingsConfigDict(env_prefix='DEV_', extra="ignore")
 
 class ProdConfig(GlobalConfig):
-    model_config = SettingsConfigDict(env_prefix='PROD_',extra="ignore")
+    model_config = SettingsConfigDict(env_prefix='PROD_', extra="ignore")
 
 class TestConfig(GlobalConfig):
     # In This Way We Override The Values In .env-File
