@@ -63,9 +63,9 @@ class TestConfig(GlobalConfig):
 def get_config(env_state: str) -> GlobalConfig:
     configs = {"dev": DevConfig, "prod": ProdConfig, "test": TestConfig}
 
-    if env_state not in configs.keys():
+    if env_state.lower() not in configs.keys():
         raise Exception(f"Invalid Value For env_state Variable {env_state}")
     
-    return configs[env_state]()
+    return configs[env_state.lower()]()
 
 config = get_config(BaseConfig().ENV_STATE)
