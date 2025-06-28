@@ -8,4 +8,6 @@ app = FastAPI()
 
 @app.get('/hello')
 async def hello():
-    return {"msg": "Hello World With SQLModel And Migration Example"}
+    return { 
+        "msg": "Hello World With SQLModel And Migration Example" 
+    }
