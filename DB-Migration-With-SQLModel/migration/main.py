@@ -8,6 +8,8 @@ from migration.db import init_db
 
 from migration.models.songs import Song
 
+from migration.routes.song import router
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
 
@@ -15,15 +17,15 @@ async def lifespan(app: FastAPI):
 
     await init_db()
 
-    print("Database Connection OK!")
+    # print("Database Connection OK!")
 
-    DATABASE_URL: str = os.environ.get("DATABASE_URL", "")
+    # DATABASE_URL: str = os.environ.get("DATABASE_URL", "")
 
-    d1 = os.getenv("DATABASE_URL")
+    # d1 = os.getenv("DATABASE_URL")
 
-    print("The Database URL is: ", DATABASE_URL);
+    # print("The Database URL is: ", DATABASE_URL);
 
-    print("d1 is: ", d1)
+    # print("d1 is: ", d1)
 
     yield
 
@@ -34,3 +36,5 @@ async def hello():
     return { 
         "msg": "Hello World With SQLModel And Migration Example" 
     }
+
+app.include_router(router=router)
