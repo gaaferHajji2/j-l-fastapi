@@ -3,10 +3,9 @@ from dotenv import load_dotenv, find_dotenv
 import os
 
 # from sqlmodel import SQLModel, create_engine, Session
-from sqlmodel import SQLModel, create_engine, Session
+from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 load_dotenv(find_dotenv(filename='migration/.env', raise_error_if_not_found=True))
@@ -28,7 +27,7 @@ async def init_db():
         await conn.run_sync(SQLModel.metadata.create_all)
         # SQLModel.metadata.create_all(bind=engine)
 
-async def get_session():
+async def get_session() -> AsyncSession:
 
     async_session = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
