@@ -13,19 +13,7 @@ from migration.routes.song import router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
 
-    # load_dotenv(find_dotenv())
-
     await init_db()
-
-    # print("Database Connection OK!")
-
-    # DATABASE_URL: str = os.environ.get("DATABASE_URL", "")
-
-    # d1 = os.getenv("DATABASE_URL")
-
-    # print("The Database URL is: ", DATABASE_URL);
-
-    # print("d1 is: ", d1)
 
     yield
 

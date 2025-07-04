@@ -2,7 +2,12 @@ from dotenv import load_dotenv, find_dotenv
 
 import os
 
+# from sqlmodel import SQLModel, create_engine, Session
 from sqlmodel import SQLModel, create_engine, Session
+from sqlmodel.ext.asyncio.session import AsyncSession
+
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 load_dotenv(find_dotenv(filename='migration/.env', raise_error_if_not_found=True))
 
@@ -16,11 +21,16 @@ DATABASE_URL: str = os.environ.get("DATABASE_URL", "")
 
 # print("d1 is: ", d1)
 
-engine = create_engine(url=DATABASE_URL, echo=True)
+engine = create_async_engine(url=DATABASE_URL, echo=True, future=True)
 
 async def init_db():
-    SQLModel.metadata.create_all(bind=engine)
+    async with engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
+        # SQLModel.metadata.create_all(bind=engine)
 
 async def get_session():
-    with Session(bind=engine) as session:
+
+    async_session = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
+
+    async with async_session() as session:
         yield session
