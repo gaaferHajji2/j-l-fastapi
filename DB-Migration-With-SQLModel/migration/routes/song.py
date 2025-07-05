@@ -27,11 +27,11 @@ async def get_all_songs(session: Annotated[AsyncSession ,Depends(get_session)]):
 
     # songs =  result.scalars().all() # The Old Way
 
-    return [ Song(id=song.id, name=song.name, artist=song.artist) for song in result ]
+    return result
 
 @router.post("/song", response_model=Song)
 async def create_new_song(song: SongCreate, session: Annotated[AsyncSession, Depends(get_session)]):
-    data = Song(name=song.name, artist=song.artist)
+    data = Song(name=song.name, artist=song.artist, year=song.year)
 
     session.add(data)
     await session.commit()
