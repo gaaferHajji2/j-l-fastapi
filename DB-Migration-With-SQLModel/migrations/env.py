@@ -5,7 +5,6 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from sqlmodel import SQLModel # Add By Jafar Loka
 
 from alembic import context
 
@@ -13,6 +12,7 @@ from alembic import context
 # access to the values within the .ini file in use.
 config = context.config
 
+from sqlmodel import SQLModel # Add By Jafar Loka
 from migration.models.songs import Song # Add By Jafar Loka
 
 # Interpret the config file for Python logging.
@@ -25,6 +25,8 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 target_metadata = SQLModel.metadata # Add By Jafar Loka
+
+print("The target metadata is: ", target_metadata)
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
