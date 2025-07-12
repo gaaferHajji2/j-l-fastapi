@@ -8,7 +8,7 @@ from sqlalchemy import DateTime, MetaData
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine, AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 
-load_dotenv()
+load_dotenv(dotenv_path='src/.env')
 
 class Base(AsyncAttrs, DeclarativeBase):
 
@@ -26,7 +26,7 @@ class Base(AsyncAttrs, DeclarativeBase):
         datetime.datetime : DateTime(timezone=True)
     }
 
-engine = create_async_engine(os.environ.get("DATABASE_URL", ""), echo=True)
+engine = create_async_engine(os.environ.get("DB_URL", ""), echo=True)
 
 async_session_maker = async_sessionmaker(bind=engine, expire_on_commit=False)
 
