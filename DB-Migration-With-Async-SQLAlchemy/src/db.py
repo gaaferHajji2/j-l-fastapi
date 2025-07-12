@@ -19,7 +19,7 @@ class Base(AsyncAttrs, DeclarativeBase):
         datetime.datetime : DateTime(timezone=True)
     }
 
-engine = create_async_engine(os.environ.get("DATABASE_URL", ""))
+engine = create_async_engine(os.environ.get("DATABASE_URL", ""), echo=True)
 
 async_session_maker = async_sessionmaker(bind=engine, expire_on_commit=False)
 
