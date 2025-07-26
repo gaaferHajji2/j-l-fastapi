@@ -5,6 +5,8 @@ from typing import Optional
 
 from enum import Enum
 
+from schemas.book import Book
+
 app = FastAPI()
 
 class SortingEnum(str, Enum):
@@ -23,4 +25,12 @@ async def get_books_year(book_id: int, year: Optional[int] = None):
     return {
         "Book ID: " : book_id,
         "books": ["Book 01", "Book 02"] if year else ["All Books"],
+    }
+
+@app.post("/books", response_model=Book)
+async def create_book(book: Book):
+    return {
+        "title": book.title,
+        "author": book.author,
+        "year": "Nothing" if book.year == None else book.year,
     }
