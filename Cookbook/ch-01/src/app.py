@@ -7,12 +7,12 @@ from enum import Enum
 
 app = FastAPI()
 
-# class SortingEnum(Enum, str):
-#     desc = "desc"
-#     asc  = "asc"
+class SortingEnum(str, Enum):
+    desc = "desc"
+    asc  = "asc"
 
 @app.get("/books/{book_id}")
-async def get_books(book_id: int, sorting: Optional[str] = None):
+async def get_books(book_id: int, sorting: Optional[SortingEnum] = None):
     return {
         "Book ID: ": book_id,
         "sorting": sorting
