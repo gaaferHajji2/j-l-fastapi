@@ -7,7 +7,7 @@ from enum import Enum
 
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from pydantic import ValidationError
+
 
 from schemas.book import Book, AdvancedBook
 
