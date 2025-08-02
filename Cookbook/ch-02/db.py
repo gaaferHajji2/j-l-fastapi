@@ -1,7 +1,10 @@
+from typing import AsyncGenerator
 from sqlalchemy import DateTime, MetaData
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine, AsyncSession
 
 from sqlalchemy.orm import DeclarativeBase
+
+import os
 
 import datetime
 
@@ -19,3 +22,11 @@ class Base(AsyncAttrs, DeclarativeBase):
     type_annotation_map = {
         datetime.datetime : DateTime(timezone=True)
     }
+
+engine = create_async_engine(os.environ.get("DATABASE_URL", ''), echo = True)
+
+async_session_maker = async_sessionmaker(bind=engine, expire_on_commit=False)
+
+async def get_async_db_session() -> AsyncGenerator[AsyncSession, None]:
+    async with async_session_maker() as session:
+        yield session
