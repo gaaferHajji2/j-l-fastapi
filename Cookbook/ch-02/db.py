@@ -8,6 +8,10 @@ import os
 
 import datetime
 
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(dotenv_path=find_dotenv(raise_error_if_not_found=True), verbose=True)
+
 class Base(AsyncAttrs, DeclarativeBase):
     metadata = MetaData(
         naming_convention={
@@ -22,6 +26,8 @@ class Base(AsyncAttrs, DeclarativeBase):
     type_annotation_map = {
         datetime.datetime : DateTime(timezone=True)
     }
+
+print(f"The DATABASE_URL is: {os.environ.get('DATABASE_URL', 'NULL')}")
 
 engine = create_async_engine(os.environ.get("DATABASE_URL", ''), echo = True)
 
