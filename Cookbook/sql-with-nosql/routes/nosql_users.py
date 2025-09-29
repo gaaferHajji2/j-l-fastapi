@@ -26,7 +26,7 @@ async def get_all_users():
 @nosql_user_router.post("/", response_model=NoSQLUserList)
 async def create_user(user: UserCreate):
     t1 = user_collection.insert_one(user.model_dump(exclude_none=True))
-    print(t1)
+    # print(t1)
     return NoSQLUserList(id=str(t1.inserted_id), **user.model_dump())
 
 @nosql_user_router.get("/{user_id}", response_model=NoSQLUserList)
