@@ -3,3 +3,4 @@ sqlalchemy
 alembic
 asyncpg
 pymongo
+pydantic[email]
