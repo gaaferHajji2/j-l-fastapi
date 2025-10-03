@@ -6,3 +6,4 @@ pymongo
 pydantic[email]
 aiofiles
 python-multipart
+pytest
