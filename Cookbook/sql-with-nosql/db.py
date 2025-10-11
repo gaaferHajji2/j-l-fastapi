@@ -27,7 +27,7 @@ class Base(AsyncAttrs, DeclarativeBase):
         datetime.datetime : DateTime(timezone=True)
     }
 
-print(f"The DATABASE_URL is: {os.environ.get('DATABASE_URL', 'NULL')}")
+# print(f"The DATABASE_URL is: {os.environ.get('DATABASE_URL', 'NULL')}")
 
 engine = create_async_engine(os.environ.get("DATABASE_URL", ''), echo = True)
 
