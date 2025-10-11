@@ -7,3 +7,8 @@ pydantic[email]
 aiofiles
 python-multipart
 pytest
+passlib
+bcrypt
+python-jose[cryptography]
+httpx
+pyotp
