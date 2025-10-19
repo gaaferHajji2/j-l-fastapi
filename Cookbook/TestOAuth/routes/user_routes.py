@@ -36,7 +36,7 @@ async def get_user_token(form_data:Annotated[OAuth2PasswordRequestForm, Depends(
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     
-    token = await create_jwt_token({ "email" : user.email, "type": "access" })
+    token = await create_jwt_token({ "sub" : user.email, "type": "access" })
 
     return {
         "token": token,
@@ -46,6 +46,7 @@ async def get_user_token(form_data:Annotated[OAuth2PasswordRequestForm, Depends(
 @user_router.get('/me')
 async def get_user_profile(token: Annotated[str, Depends(oauth2_schema)], session: Annotated[AsyncSession, Depends(get_async_db_session)]):
     # user = await get_user_from_token(token, session)
+    print(f"token is: {token}")
     user = await get_user_from_token(token, session)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)

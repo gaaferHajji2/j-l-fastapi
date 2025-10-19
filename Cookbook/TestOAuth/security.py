@@ -11,7 +11,7 @@ from db import get_async_db_session
 from util.util import pwd_context
 from models.users_model import User
 
-oauth2_schema = OAuth2PasswordBearer(tokenUrl='/users/token/')
+oauth2_schema = OAuth2PasswordBearer(tokenUrl='/users/token')
 
 async def authenticate_user(session: AsyncSession, email: str, password: str) -> User|None:
     try:
