@@ -7,11 +7,11 @@ from jose import jwt, JWTError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from email_validator import validate_email, EmailNotValidError
+from db import get_async_db_session
 from util.util import pwd_context
 from models.users_model import User
-from db import get_async_db_session
 
-oauth2_schema = OAuth2PasswordBearer(tokenUrl='/users/token')
+oauth2_schema = OAuth2PasswordBearer(tokenUrl='/users/token/')
 
 async def authenticate_user(session: AsyncSession, email: str, password: str) -> User|None:
     try:
@@ -20,16 +20,16 @@ async def authenticate_user(session: AsyncSession, email: str, password: str) ->
         user = (await session.execute(select(User).filter(User.email == email))).scalar_one_or_none()
 
         if not user:
-            print("No User Found")
+            # print("No User Found")
             return None
         
         if not pwd_context.verify(password, user.password):
-            print("Wrong password")
+            # print("Wrong password")
             return None
 
         return user
     except EmailNotValidError as e:
-        print(f"error in email: {e}")
+        # print(f"error in email: {e}")
         return None
 
 async def create_jwt_token(data: dict) -> str:
@@ -41,12 +41,10 @@ async def create_jwt_token(data: dict) -> str:
     )
 
     payload.update({'exp': expire_time})
-
     token = jwt.encode(payload, os.environ.get('SECRET_KEY', ''), algorithm=os.environ.get('ALGORITHM', ''))
-
     return token
 
-async def get_user_from_token(token: Annotated[str, Depends(oauth2_schema)], session: AsyncSession) -> User | None:
+async def get_user_from_token(token: Annotated[str, Depends(oauth2_schema)], session: Annotated[AsyncSession, Depends(get_async_db_session)]) -> User | None:
     try:
         payload = jwt.decode(token, os.environ.get('SECRET_KEY', ''), algorithms=os.environ.get('ALGORITHM', ''))
         email: str | None = payload.get("sub")
@@ -55,7 +53,7 @@ async def get_user_from_token(token: Annotated[str, Depends(oauth2_schema)], ses
 
         user = (await session.execute(select(User).filter(User.email == email))).scalar_one_or_none()
 
-        print(f"User is: {user}")
+        # print(f"User is: {user}")
 
         return user
 
