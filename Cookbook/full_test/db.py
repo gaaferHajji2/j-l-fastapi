@@ -22,7 +22,7 @@ class Base(AsyncAttrs, DeclarativeBase):
 
 # print(f"The DATABASE_URL is: {os.environ.get('DATABASE_URL', 'NULL')}")
 
-engine = create_async_engine("sqlite:///./production.db", echo = True)
+engine = create_async_engine("sqlite+aiosqlite:///./production.db", echo = True)
 
 async_session_maker = async_sessionmaker(bind=engine, expire_on_commit=False)
 

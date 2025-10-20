@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, status
-from db import Base, engine
+from full_test.db import Base, engine
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -8,7 +8,7 @@ async def lifespan(app: FastAPI):
             await conn.run_sync(Base.metadata.create_all)
     yield
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 @app.get('/home', status_code=status.HTTP_200_OK)
 async def get_home():
