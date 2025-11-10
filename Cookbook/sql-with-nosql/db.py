@@ -1,13 +1,10 @@
 from typing import AsyncGenerator
 from sqlalchemy import DateTime, MetaData
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine, AsyncSession
-
 from sqlalchemy.orm import DeclarativeBase
 
 import os
-
 import datetime
-
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(dotenv_path=find_dotenv(raise_error_if_not_found=True), verbose=True)
