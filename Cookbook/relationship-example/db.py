@@ -11,7 +11,7 @@ load_dotenv(find_dotenv(filename='.env', raise_error_if_not_found=True), verbose
 
 class Base(AsyncAttrs, DeclarativeBase):
     metadata = MetaData(
-        naming_convention={
+        naming_convention = {
             "ix": "ix_%(column_0_label)s",
             "uq": "uq_%(table_name)s_%(column_0_name)s",
             "ck": "ck_%(table_name)s_`%(constraint_name)s`",
