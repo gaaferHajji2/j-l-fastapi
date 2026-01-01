@@ -46,7 +46,6 @@ def configure_logging() -> None:
                 "datefmt": "%Y-%m-%dT%H:%M:%S",
                 "format": "(%(correlation_id)s) %(name)s:%(lineno)d - %(message)s"
             },
-
             "file": {
                 "class": "pythonjsonlogger.jsonlogger.JsonFormatter",
                 "datefmt": "%Y-%m-%dT%H:%M:%S",
@@ -61,7 +60,6 @@ def configure_logging() -> None:
                 "formatter": "console",
                 "filters": ["correlation_id", "email_obfuscation"],
             },
-
             "rotating_file": {
                 "class": "logging.handlers.RotatingFileHandler",
                 "level": "DEBUG",
