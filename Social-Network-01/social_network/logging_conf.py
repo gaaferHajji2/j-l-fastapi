@@ -1,31 +1,23 @@
 import logging
-
 from logging.config import dictConfig
 
 from social_network.config import DevConfig, config
 
-
 def obfuscated(email: str, obfuscated_length: int) -> str:
     characters = email[:obfuscated_length]
-
     first, last = email.split('@')
-
     return characters + ('*' * (len(first) - obfuscated_length)) + '@' + last
 
 class EmailObfuscationFilter(logging.Filter):
 
     def __init__(self, name: str = "", obfuscated_length: int = 2):
         super().__init__(name)
-
         self.obfuscated_length = obfuscated_length
 
     def filter(self, record: logging.LogRecord) -> bool:
-
         if "email" in record.__dict__:
             record.email = obfuscated(record.email, self.obfuscated_length)
-
             # print("The Email Value Is: ", record.email) # For Debugging Only
-
         return True
 
 def configure_logging() -> None:
@@ -88,7 +80,6 @@ def configure_logging() -> None:
                 "propagate": False, # This Will Prevent From Sending Logs To Parent
                 # Note: The Main Parent For All Loggers Is Root
             },
-
             # In This Way We Override The Configuration Of 
             # uvicorn, databases, aiosqlite-Modules
             # Note: Not All Logs Will Be Formatted
@@ -96,12 +87,10 @@ def configure_logging() -> None:
                 "handlers": ["default", "rotating_file"],
                 "level": "INFO",
             },
-
             "databases": {
                 "handlers": ["default", "rotating_file"],
                 "level": "INFO",
             },
-
             "aiosqlite": {
                 "handlers": ["default", "rotating_file"],
                 "level": "INFO",
