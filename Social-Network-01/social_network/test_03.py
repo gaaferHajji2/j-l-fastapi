@@ -13,12 +13,8 @@ From: {sender}
 This is a test e-mail message."""
 
 with smtp.SMTP(config.EMAIL_HOST, config.EMAIL_PORT) as server:
-
     server.ehlo()
-
     server.starttls()
-
     server.login(config.USERNAME, config.PASSWORD)
-
     server.sendmail(sender, receiver, message)
 
