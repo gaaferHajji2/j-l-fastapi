@@ -60,12 +60,10 @@ async def get_post_with_comments(post_id: int):
     if post is None:
         # logger.error(f"Post Not Found For Get Post With Comments With Id: {post_id}")
         raise HTTPException(status_code=404, detail=f"Post Not Found For Get Post With Its Comments With Id: {post_id}")
-    
     # return {
     #     "post": post,
     #     "comments": [comment for comment in comment_table.values() if comment["post_id" ]== post_id]
     # }
-
     return {
         "post": post,
         "comments": await get_post_comments(post_id=post_id)
