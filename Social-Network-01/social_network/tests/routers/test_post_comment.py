@@ -1,5 +1,4 @@
 import pytest
-
 from httpx import AsyncClient
 
 async def create_post(body: str, async_client: AsyncClient, get_token: str):
@@ -8,11 +7,9 @@ async def create_post(body: str, async_client: AsyncClient, get_token: str):
         json={"body": body}, 
         headers={"Authorization": f"Bearer {get_token}"},
     )
-
     # For Debugging Only
     # print("The Status Code Is: ", response.status_code)
     # print("The Response Body Is: ", response.json())
-
     return response.status_code, response.json()
 
 async def create_comment(body: str, post_id: int, async_client: AsyncClient, get_token: str):
@@ -21,13 +18,10 @@ async def create_comment(body: str, post_id: int, async_client: AsyncClient, get
         json={"body": body, "post_id": post_id},
         headers={"Authorization": f"Bearer {get_token}"},
     )
-
     # For Debugging Only
     # print("The Status Code Is: ", response.status_code)
     # print("The Response Body Is: ", response.json())
-
     return response.status_code, response.json()
-
 
 @pytest.fixture()
 async def created_post(async_client: AsyncClient, get_token: str):
@@ -58,20 +52,15 @@ async def test_create_post_without_body(async_client: AsyncClient, get_token: st
         json={}, 
         headers={"Authorization": f"Bearer {get_token}"},
     )
-
     assert response.status_code == 422
 
 @pytest.mark.anyio
 async def test_get_all_posts(async_client: AsyncClient, created_post: tuple):
     _, __ = created_post
     response = await async_client.get('/post/')
-
     data = response.json()
-
     assert response.status_code == 200
-
     assert len(data) > 0
-
     assert type(data[0]) is dict
 
 # Note Here: If We Don't Set created_post, Then The Test Will Fail
@@ -80,7 +69,5 @@ async def test_get_all_posts(async_client: AsyncClient, created_post: tuple):
 @pytest.mark.anyio
 async def test_create_comment(created_post: tuple, created_comment: tuple):
     status_code, data = created_comment
-
     assert status_code == 201
-
     assert { "body": "J-L-Test-01 Comment", "post_id": 1}.items() <= data.items()
