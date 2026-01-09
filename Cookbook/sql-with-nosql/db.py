@@ -24,7 +24,6 @@ class Base(AsyncAttrs, DeclarativeBase):
     }
 
 # print(f"The DATABASE_URL is: {os.environ.get('DATABASE_URL', 'NULL')}")
-
 engine = create_async_engine(os.environ.get("DATABASE_URL", ''), echo = True)
 async_session_maker = async_sessionmaker(bind=engine, expire_on_commit=False)
 async def get_async_db_session() -> AsyncGenerator[AsyncSession, None]:
