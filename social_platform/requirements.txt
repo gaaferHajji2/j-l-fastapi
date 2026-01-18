@@ -1,0 +1,10 @@
+fastapi
+sqlalchemy
+uvicorn[standard]
+sqlalchemy[asyncio]
+asyncpg
+pydantic
+pydantic-settings
+pydantic-extra-types
+python-dotenv
+email-validator
