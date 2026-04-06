@@ -2,7 +2,6 @@ from typing import Annotated, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from db import get_async_db_session
 from models.user import User
 from schemas.user_schema import UserCreate, UserList
