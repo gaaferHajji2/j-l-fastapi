@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, status
-from full_test.db import Base, engine
+from simple_test.db import Base, engine
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

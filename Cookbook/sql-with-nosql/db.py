@@ -7,7 +7,6 @@ from sqlalchemy.orm import DeclarativeBase
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(dotenv_path=find_dotenv(raise_error_if_not_found=True), verbose=True)
-
 class Base(AsyncAttrs, DeclarativeBase):
     metadata = MetaData(
         naming_convention={

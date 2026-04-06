@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-
 from routes.users import users_router
 from routes.nosql_users import nosql_user_router
 

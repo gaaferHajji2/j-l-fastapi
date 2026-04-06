@@ -5,7 +5,6 @@ class UserSchemaRes(BaseModel):
     name: constr(min_length=1, max_length=255) # type: ignore
     email: EmailStr
     model_config = ConfigDict(from_attributes = True)
-
 class UserSchemaReq(BaseModel):
     name: constr(min_length=1, max_length=255) # type: ignore
     email: EmailStr

@@ -1,14 +1,9 @@
 import enum
 from fastapi import FastAPI, Query, Request
-
 from typing import Optional
-
 from enum import Enum
-
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-
-
 from schemas.book import Book, AdvancedBook
 
 app = FastAPI()
@@ -19,11 +14,9 @@ map_errors = {
     'Input should be greater than or equal to 2000': 'Year must be between 2000 && 20000'
 }
 
-
 class SortingEnum(str, Enum):
     desc = "desc"
     asc = "asc"
-
 
 @app.get("/books/{book_id}")
 async def get_books(book_id: int, sorting: Optional[SortingEnum] = None):
@@ -37,7 +30,6 @@ async def get_books_year(book_id: int, year: Optional[int] = None):
         "books": ["Book 01", "Book 02"] if year else ["All Books"],
     }
 
-
 @app.post("/books", response_model=Book)
 async def create_book(book: Book):
     return {
@@ -45,7 +37,6 @@ async def create_book(book: Book):
         "author": book.author,
         "year": "Nothing" if book.year == None else book.year,
     }
-
 
 @app.post("/adv/books", response_model=Book)
 async def create_advanced_book(book: AdvancedBook):
@@ -58,11 +49,8 @@ async def create_advanced_book(book: AdvancedBook):
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, err: RequestValidationError):
     errors = []
-
     for error in err.errors():
-
-        print(f"error is: {err.__dict__}")
-
+        # print(f"error is: {err.__dict__}")
         errors.append({
             "field": error["loc"][-1] if error["loc"] else "unknown",
             "message": map_errors.get(error["msg"], ''),

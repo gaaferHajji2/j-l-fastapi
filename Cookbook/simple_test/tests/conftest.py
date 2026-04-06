@@ -2,7 +2,7 @@ from typing import AsyncGenerator
 import pytest, pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from fastapi.testclient import TestClient
-from full_test.src.app import app
+from simple_test.src.app import app
 
 @pytest.fixture(scope="session")
 def anyio_backend():

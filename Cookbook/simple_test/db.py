@@ -4,7 +4,6 @@ from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_
 from sqlalchemy.orm import DeclarativeBase
 import datetime
 
-
 class Base(AsyncAttrs, DeclarativeBase):
     metadata = MetaData(
         naming_convention={
@@ -21,11 +20,8 @@ class Base(AsyncAttrs, DeclarativeBase):
     }
 
 # print(f"The DATABASE_URL is: {os.environ.get('DATABASE_URL', 'NULL')}")
-
 engine = create_async_engine("sqlite+aiosqlite:///./production.db", echo = True)
-
 async_session_maker = async_sessionmaker(bind=engine, expire_on_commit=False)
-
 async def get_async_db_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_maker() as session:
         yield session

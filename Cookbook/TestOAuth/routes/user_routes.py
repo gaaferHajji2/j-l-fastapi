@@ -13,7 +13,7 @@ user_router = APIRouter()
 
 @user_router.post('/', response_model=UserSchemaRes)
 async def create_user(user: UserSchemaReq, db: Annotated[AsyncSession, Depends(get_async_db_session)]):
-    print(f"The user Password is: {user.password}")
+    # print(f"The user Password is: {user.password}")
     user.password = pwd_context.hash(user.password)
     t2 = await db.execute(select(User).filter(User.email == user.email))
     t2 = t2.scalar_one_or_none()
@@ -39,7 +39,7 @@ async def get_user_token(form_data:Annotated[OAuth2PasswordRequestForm, Depends(
 @user_router.get('/me')
 async def get_user_profile(token: Annotated[str, Depends(oauth2_schema)], session: Annotated[AsyncSession, Depends(get_async_db_session)]):
     # user = await get_user_from_token(token, session)
-    print(f"token is: {token}")
+    # print(f"token is: {token}")
     user = await get_user_from_token(token, session)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
