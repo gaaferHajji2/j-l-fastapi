@@ -1,6 +1,5 @@
 from typing import Optional
-from functools import lru_cache # This For Caching The Results Of Function
-# Depending On Parameters
+from functools import lru_cache # This For Caching The Results Of Function Depending On Parameters
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class BaseConfig(BaseSettings):

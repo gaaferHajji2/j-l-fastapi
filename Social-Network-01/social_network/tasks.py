@@ -1,10 +1,8 @@
 import logging
 import smtplib as smtp
-
 from social_network.config import config
 
 logger = logging.getLogger(__name__)
-# print(__name__)
 
 async def send_simple_email(to: str, subject: str, body: str, from_: str):
     sender = f"Private Person <{from_}>"

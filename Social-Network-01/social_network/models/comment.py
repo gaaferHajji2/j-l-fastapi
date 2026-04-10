@@ -1,5 +1,4 @@
 from pydantic import BaseModel, ConfigDict
-
 from social_network.models.post import UserPostWithLikes
 
 class UserCommentIn(BaseModel):

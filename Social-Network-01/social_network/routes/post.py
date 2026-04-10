@@ -3,7 +3,6 @@ from fastapi import APIRouter, Depends
 from typing import Annotated
 from enum import Enum
 import sqlalchemy
-
 from social_network.database import posts_table, likes_table, database
 from social_network.models.post import UserPost, UserPostIn, UserPostWithLikes
 from social_network.models.user import User
@@ -12,12 +11,6 @@ from social_network.security import get_current_user
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-# print(__name__)
-
-# @router.get("/")
-# async def getHelloMessage():
-#     return {"Message": "Hello"}
-# post_table = {}
 select_post_and_likes = (
     sqlalchemy.select(
         posts_table, 
@@ -56,9 +49,6 @@ class PostSorting(str, Enum):
 
 @router.get("/", response_model=list[UserPostWithLikes])
 async def get_all_posts(sorting: PostSorting = PostSorting.new):
-    # return post_table.values()
-    # OR We Can Use
-    # print(f"The Sorting Is: {sorting}")
     if sorting == PostSorting.new:
         query = select_post_and_likes.order_by(posts_table.c.id.desc())
     elif sorting == PostSorting.old:

@@ -5,7 +5,6 @@ import logging
 from passlib.context import CryptContext
 import datetime
 from jose import jwt, ExpiredSignatureError, JWTError
-
 from social_network.database import database, users_table
 from social_network.config import config
 from social_network.models.user import User
@@ -92,10 +91,6 @@ def get_subject_for_token_type(token: str, token_type: Literal['access', 'confir
         raise create_credentials_exception(detail="Email Not Found")
         
     t1 = payload.get('type')
-    # print("*#"*15)
-    # print(f"The T1 Value Is: {t1}")
-    # print(f"The Token Type Is: {token_type}")
-    # print("*#"*15)
     if t1 is None or t1.lower() != token_type.lower():
         raise create_credentials_exception(detail="Invalid Type For Token")
         

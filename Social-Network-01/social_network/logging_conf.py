@@ -1,6 +1,5 @@
 import logging
 from logging.config import dictConfig
-
 from social_network.config import DevConfig, config
 
 def obfuscated(email: str, obfuscated_length: int) -> str:
@@ -9,7 +8,6 @@ def obfuscated(email: str, obfuscated_length: int) -> str:
     return characters + ('*' * (len(first) - obfuscated_length)) + '@' + last
 
 class EmailObfuscationFilter(logging.Filter):
-
     def __init__(self, name: str = "", obfuscated_length: int = 2):
         super().__init__(name)
         self.obfuscated_length = obfuscated_length

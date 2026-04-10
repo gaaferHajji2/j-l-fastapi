@@ -16,6 +16,7 @@ Path(UPLOAD_DIRECTORY).mkdir(parents=True, exist_ok=True)
 async def upload_file(file: UploadFile = File(...)):
     try:
         # Validate file size
+        # ! Note: This code is old
         file.file.seek(0, 2)  # Move to end of file
         file_size = file.file.tell()
         if file_size > MAX_FILE_SIZE:
@@ -48,7 +49,7 @@ async def upload_file(file: UploadFile = File(...)):
             content={
                 "message": "File uploaded successfully",
                 "file_path": file_path,
-                "file_size": str((file_size/1024/1024).__round__(2)) + " MB",
+                "file_size": str((file_size/1024/1024).__round__(2)) + " MB", # ! This is the old way
                 "content_type": file.content_type
             }
         )
