@@ -1,6 +1,5 @@
 import requests
 import json
-
 from config import config
 
 url = f"https://sandbox.api.mailtrap.io/api/send/{config.API_URL}"
@@ -17,4 +16,4 @@ headers = {
     "Content-Type": "application/json"
 }
 response = requests.request(method="POST", url=url, headers=headers, data=payload)
-print(response.text)
+# print(response.text)
