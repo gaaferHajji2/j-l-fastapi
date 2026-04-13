@@ -3,6 +3,8 @@ from datetime import datetime
 from app.core.database import Base
 from sqlalchemy import Integer, String, Text, ForeignKey, Boolean, DateTime, func
 from sqlalchemy.orm import mapped_column, relationship, Mapped
+from app.models.user import User
+from app.models.comment import Comment
 
 class Post(Base):
     __tablename__ = "posts"

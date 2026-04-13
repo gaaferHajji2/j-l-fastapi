@@ -4,6 +4,9 @@ import enum
 from app.core.database import Base
 from sqlalchemy import Table, Integer, Column, ForeignKey, func, DateTime, Boolean, String, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from app.models.user_profile import UserProfile
+from app.models.post import Post
+from app.models.comment import Comment
 
 # Many-to-many association table for user friendships
 user_friendship = Table(

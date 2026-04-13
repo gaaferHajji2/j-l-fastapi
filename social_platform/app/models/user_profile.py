@@ -3,6 +3,7 @@ from datetime import datetime
 from app.core.database import Base
 from sqlalchemy import Integer, ForeignKey, String, Text, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from app.models.user import User
 
 class UserProfile(Base):
     __tablename__ = "user_profiles"
