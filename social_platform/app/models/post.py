@@ -1,7 +1,7 @@
 from typing import List
 from datetime import datetime
 from app.core.database import Base
-from sqlalchemy import Integer, String, Text, ForeignKey, Boolean, DateTime, func
+from sqlalchemy import Integer, String, Text, ForeignKey, Boolean, DateTime, func, Column, Table
 from sqlalchemy.orm import mapped_column, relationship, Mapped
 from app.models.user import User
 from app.models.comment import Comment
@@ -33,3 +33,10 @@ class Post(Base):
     
     def __repr__(self):
         return f"<Post(id={self.id}, title={self.title}, author_id={self.author_id})>"
+
+post_categories = Table(
+    'post_categories',
+    Base.metadata,
+    Column('post_id', Integer, ForeignKey('posts.id', ondelete='CASCADE'), primary_key=True),
+    Column('category_id', Integer, ForeignKey('categories.id', ondelete='CASCADE'), primary_key=True),
+)
