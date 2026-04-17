@@ -1,6 +1,6 @@
 from typing import Optional
 from enum import Enum
-from pydantic import BaseModel, field_validator, EmailStr, Field
+from pydantic import BaseModel, field_validator, EmailStr, Field, ConfigDict
 
 class UserStatus(str, Enum):
     ACTIVE = "active"
@@ -19,3 +19,18 @@ class UserBase(BaseModel):
         if not v.replace('_', '').replace('-', '').isalnum():
             raise ValueError('Username must be alphanumeric (underscores and hyphens allowed)')
         return v
+
+# Request schemas
+class UserCreate(UserBase):
+    password: str = Field(..., min_length=8, description="Password")
+    
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "email": "user@example.com",
+                "username": "johndoe",
+                "full_name": "John Doe",
+                "password": "securepassword123"
+            }
+        }
+    )
