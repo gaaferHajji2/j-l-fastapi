@@ -34,3 +34,9 @@ class UserCreate(UserBase):
             }
         }
     )
+
+class UserUpdate(BaseModel):
+    email: Optional[EmailStr] = Field(None, description="User email address")
+    username: Optional[str] = Field(None, min_length=3, max_length=50, description="Username")
+    full_name: Optional[str] = Field(None, max_length=100, description="Full name")
+    status: Optional[UserStatus] = Field(None, description="User status")
