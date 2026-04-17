@@ -5,6 +5,7 @@ from sqlalchemy import Integer, String, Text, ForeignKey, Boolean, DateTime, fun
 from sqlalchemy.orm import mapped_column, relationship, Mapped
 from app.models.user import User
 from app.models.comment import Comment
+from app.models.category import Category
 
 class Post(Base):
     __tablename__ = "posts"
