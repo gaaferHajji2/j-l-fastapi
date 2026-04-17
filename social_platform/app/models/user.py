@@ -4,9 +4,10 @@ import enum
 from app.core.database import Base
 from sqlalchemy import Table, Integer, Column, ForeignKey, func, DateTime, Boolean, String, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.models.user_profile import UserProfile
-from app.models.post import Post
-from app.models.comment import Comment
+from app.models.user_group import user_group
+# from app.models.user_profile import UserProfile
+# from app.models.post import Post
+# from app.models.comment import Comment
 
 # Many-to-many association table for user friendships
 user_friendship = Table(
@@ -15,16 +16,6 @@ user_friendship = Table(
     Column('user_id', Integer, ForeignKey('users.id', ondelete='CASCADE'), primary_key=True),
     Column('friend_id', Integer, ForeignKey('users.id', ondelete='CASCADE'), primary_key=True),
     Column('created_at', DateTime(timezone=True), server_default=func.now()),
-)
-
-# Many-to-many association table for user group memberships
-user_group = Table(
-    'user_group',
-    Base.metadata,
-    Column('user_id', Integer, ForeignKey('users.id', ondelete='CASCADE'), primary_key=True),
-    Column('group_id', Integer, ForeignKey('groups.id', ondelete='CASCADE'), primary_key=True),
-    Column('joined_at', DateTime(timezone=True), server_default=func.now()),
-    Column('is_admin', Boolean, default=False),
 )
 
 class UserStatus(str, enum.Enum):

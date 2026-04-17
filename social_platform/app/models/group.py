@@ -1,7 +1,8 @@
 from typing import List, Optional
 from datetime import datetime
 from app.core.database import Base
-from app.models.user import User, user_group
+from app.models.user_group import user_group
+# from app.models.user import User, user_group
 from sqlalchemy import Integer, String, Text, Boolean, ForeignKey, func, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 

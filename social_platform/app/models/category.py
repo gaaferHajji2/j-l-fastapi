@@ -3,7 +3,7 @@ from datetime import datetime
 from app.core.database import Base
 from sqlalchemy import Integer, String, Text, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.models.post import Post
+# from app.models.post import Post
 
 class Category(Base):
     __tablename__ = "categories"
