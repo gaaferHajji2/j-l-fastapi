@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from enum import Enum
 from pydantic import BaseModel, field_validator, EmailStr, Field, ConfigDict
@@ -49,5 +49,12 @@ class UserResponse(UserBase):
     created_at: datetime
     updated_at: datetime
     profile: Optional["UserProfileResponse"] = None
+    
+    model_config = ConfigDict(from_attributes=True)
+
+class UserWithRelationsResponse(UserResponse):
+    posts: List["PostResponse"] = []
+    friends: List["UserResponse"] = []
+    groups: List["GroupResponse"] = []
     
     model_config = ConfigDict(from_attributes=True)
