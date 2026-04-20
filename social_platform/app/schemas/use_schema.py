@@ -1,4 +1,5 @@
 from typing import Optional
+from datetime import datetime
 from enum import Enum
 from pydantic import BaseModel, field_validator, EmailStr, Field, ConfigDict
 
@@ -40,3 +41,13 @@ class UserUpdate(BaseModel):
     username: Optional[str] = Field(None, min_length=3, max_length=50, description="Username")
     full_name: Optional[str] = Field(None, max_length=100, description="Full name")
     status: Optional[UserStatus] = Field(None, description="User status")
+
+class UserResponse(UserBase):
+    id: int
+    is_active: bool
+    status: UserStatus
+    created_at: datetime
+    updated_at: datetime
+    profile: Optional["UserProfileResponse"] = None
+    
+    model_config = ConfigDict(from_attributes=True)
