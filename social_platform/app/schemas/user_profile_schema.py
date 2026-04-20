@@ -10,3 +10,6 @@ class UserProfileBase(BaseModel):
 
 class UserProfileCreate(UserProfileBase):
     date_of_birth: Optional[datetime] = Field(None, description="Date of birth")
+
+class UserProfileUpdate(UserProfileBase):
+    date_of_birth: Optional[datetime] = Field(None, description="Date of birth")
