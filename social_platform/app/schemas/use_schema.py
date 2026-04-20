@@ -58,3 +58,9 @@ class UserWithRelationsResponse(UserResponse):
     groups: List["GroupResponse"] = []
     
     model_config = ConfigDict(from_attributes=True)
+
+class UserWithFriendsResponse(UserResponse):
+    friends: List["UserResponse"] = []
+    
+    model_config = ConfigDict(from_attributes=True)
+
