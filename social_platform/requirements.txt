@@ -9,3 +9,4 @@ pydantic-extra-types
 python-dotenv
 email-validator
 alembic
+bcrypt
