@@ -64,3 +64,8 @@ class UserWithFriendsResponse(UserResponse):
     
     model_config = ConfigDict(from_attributes=True)
 
+class UserWithPostsResponse(UserResponse):
+    posts: List["PostResponse"] = []
+    
+    model_config = ConfigDict(from_attributes=True)
+
