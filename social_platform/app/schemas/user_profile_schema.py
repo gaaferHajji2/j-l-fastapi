@@ -14,7 +14,6 @@ class UserProfileCreate(UserProfileBase):
 class UserProfileUpdate(UserProfileBase):
     date_of_birth: Optional[datetime] = Field(None, description="Date of birth")
 
-# Response schemas
 class UserProfileResponse(UserProfileBase):
     id: int
     user_id: int
