@@ -1,6 +1,6 @@
 from typing import Optional
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 class UserProfileBase(BaseModel):
     bio: Optional[str] = Field(None, max_length=500, description="User biography")
@@ -13,3 +13,13 @@ class UserProfileCreate(UserProfileBase):
 
 class UserProfileUpdate(UserProfileBase):
     date_of_birth: Optional[datetime] = Field(None, description="Date of birth")
+
+# Response schemas
+class UserProfileResponse(UserProfileBase):
+    id: int
+    user_id: int
+    date_of_birth: Optional[datetime]
+    created_at: datetime
+    updated_at: datetime
+    
+    model_config = ConfigDict(from_attributes=True)
