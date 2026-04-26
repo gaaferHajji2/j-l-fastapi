@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, status, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.user_crud import UserCRUD
-from app.schemas.user_schema import UserResponse, UserCreate
+from app.schemas.user_schema import UserResponse, UserCreate, UserWithRelationsResponse
 from app.core.database import get_db
 from app.core.errors import handle_validation_error, handle_conflict_error
 
@@ -42,3 +42,17 @@ async def read_users(
     crud = UserCRUD(db)
     users = await crud.get_users(skip=skip, limit=limit)
     return users
+
+@router.get("/{user_id}", response_model=UserWithRelationsResponse)
+async def read_user(
+    user_id: int,
+    db: AsyncSession = Depends(get_db)
+):
+    """Get user by ID with all relationships"""
+    crud = UserCRUD(db)
+    user = await crud.get_user_with_relations(user_id)
+    
+    if not user:
+        await handle_not_found_error("User", user_id)
+    
+    return user
