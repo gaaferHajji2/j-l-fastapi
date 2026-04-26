@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, status, HTTPException
+from typing import List
+from fastapi import APIRouter, Depends, status, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.user_crud import UserCRUD
 from app.schemas.user_schema import UserResponse, UserCreate
@@ -30,3 +31,14 @@ async def create_user(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"code": "INTERNAL_ERROR", "message": "An unexpected error occurred"}
         )
+
+@router.get("/", response_model=List[UserResponse])
+async def read_users(
+    skip: int = Query(0, ge=0, description="Number of records to skip"),
+    limit: int = Query(100, ge=1, le=1000, description="Maximum number of records to return"),
+    db: AsyncSession = Depends(get_db)
+):
+    """Get list of users"""
+    crud = UserCRUD(db)
+    users = await crud.get_users(skip=skip, limit=limit)
+    return users
