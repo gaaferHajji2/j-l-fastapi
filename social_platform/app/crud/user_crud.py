@@ -244,3 +244,25 @@ class UserCRUD:
         await self.db.commit()
         await self.db.refresh(user)
         return user
+    
+    async def leave_group(self, user_id: int, group_id: int) -> User:
+        user = await self.get_user_with_relations(user_id)
+        if not user:
+            raise NotFoundError("User", user_id)
+        
+        result = await self.db.execute(
+            select(Group).options(selectinload(Group.members)).where(Group.id == group_id)
+        )
+        group = result.scalar_one_or_none()
+        
+        if not group:
+            raise NotFoundError("Group", group_id)
+        
+        # Check if in group
+        if group not in user.groups:
+            raise RelationshipError(f"User is not a member of group {group_id}")
+        
+        user.groups.remove(group)
+        await self.db.commit()
+        await self.db.refresh(user)
+        return user
