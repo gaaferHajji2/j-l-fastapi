@@ -242,3 +242,24 @@ async def leave_group(
             elif e.code == "RELATIONSHIP_ERROR":
                 await handle_relationship_error(str(e))
         raise
+
+@router.post("/posts/{post_id}/categories/{category_id}", response_model=PostWithRelationsResponse)
+async def add_category_to_post(
+    post_id: int,
+    category_id: int,
+    db: AsyncSession = Depends(get_db)
+):
+    """Add a category to a post (many-to-many relationship)"""
+    try:
+        crud = PostCRUD(db)
+        post = await crud.add_category_to_post(post_id, category_id)
+        return post
+    except Exception as e:
+        if hasattr(e, 'code'):
+            if e.code == "NOT_FOUND_ERROR":
+                resource = "Post" if "Post" in str(e) else "Category"
+                resource_id = category_id if "Category" in str(e) else post_id
+                await handle_not_found_error(resource, resource_id)
+            elif e.code == "CONFLICT_ERROR":
+                await handle_conflict_error(str(e))
+        raise
