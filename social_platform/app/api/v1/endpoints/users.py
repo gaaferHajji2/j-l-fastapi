@@ -2,6 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, status, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.user_crud import UserCRUD
+from app.crud.post_crud import PostCRUD
 from app.schemas.user_schema import UserResponse, UserCreate, UserWithRelationsResponse, UserUpdate
 from app.schemas.user_profile_schema import UserProfileUpdate
 from app.schemas.post_schema import PostWithRelationsResponse
@@ -118,3 +119,23 @@ async def read_user_posts(
     crud = UserCRUD(db)
     posts = await crud.get_user_posts(user_id)
     return posts
+
+@router.post("/{user_id}/posts", response_model=PostWithRelationsResponse, status_code=status.HTTP_201_CREATED)
+async def create_user_post(
+    user_id: int,
+    title: str = Query(..., min_length=1, max_length=200, description="Post title"),
+    content: str = Query(..., min_length=1, description="Post content"),
+    db: AsyncSession = Depends(get_db)
+):
+    """Create a new post for a user (one-to-many relationship)"""
+    try:
+        crud = UserCRUD(db)
+        post = await crud.create_post(user_id, title, content)
+        
+        # Return post with relations
+        post_crud = PostCRUD(db)
+        return await post_crud.get_post_with_relations(post.id)
+    except Exception as e:
+        if hasattr(e, 'code') and e.code == "NOT_FOUND_ERROR":
+            await handle_not_found_error("User", user_id)
+        raise
