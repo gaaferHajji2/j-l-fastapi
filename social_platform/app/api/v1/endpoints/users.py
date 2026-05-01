@@ -198,3 +198,26 @@ async def get_friends(
         await handle_not_found_error("User", user_id)
     
     return user
+
+@router.post("/{user_id}/groups/{group_id}", response_model=UserWithRelationsResponse)
+async def join_group(
+    user_id: int,
+    group_id: int,
+    db: AsyncSession = Depends(get_db)
+):
+    """Join a group (many-to-many relationship)"""
+    try:
+        crud = UserCRUD(db)
+        user = await crud.join_group(user_id, group_id)
+        return user
+    except Exception as e:
+        if hasattr(e, 'code'):
+            if e.code == "NOT_FOUND_ERROR":
+                resource = "User" if "User" in str(e) else "Group"
+                resource_id = group_id if "Group" in str(e) else user_id
+                await handle_not_found_error(resource, resource_id)
+            elif e.code == "CONFLICT_ERROR":
+                await handle_conflict_error(str(e))
+            elif e.code == "RELATIONSHIP_ERROR":
+                await handle_relationship_error(str(e))
+        raise
