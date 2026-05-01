@@ -184,3 +184,17 @@ async def remove_friend(
             elif e.code == "RELATIONSHIP_ERROR":
                 await handle_relationship_error(str(e))
         raise
+
+@router.get("/{user_id}/friends", response_model=UserWithFriendsResponse)
+async def get_friends(
+    user_id: int,
+    db: AsyncSession = Depends(get_db)
+):
+    """Get all friends of a user"""
+    crud = UserCRUD(db)
+    user = await crud.get_user_with_relations(user_id)
+    
+    if not user:
+        await handle_not_found_error("User", user_id)
+    
+    return user
