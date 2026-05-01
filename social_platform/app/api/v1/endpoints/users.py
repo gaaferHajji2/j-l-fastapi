@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.user_crud import UserCRUD
 from app.schemas.user_schema import UserResponse, UserCreate, UserWithRelationsResponse, UserUpdate
 from app.schemas.user_profile_schema import UserProfileUpdate
+from app.schemas.post_schema import PostWithRelationsResponse
 from app.core.database import get_db
 from app.core.errors import handle_validation_error, handle_conflict_error, handle_not_found_error
 
@@ -107,3 +108,13 @@ async def update_user_profile(
         if hasattr(e, 'code') and e.code == "NOT_FOUND_ERROR":
             await handle_not_found_error("User", user_id)
         raise
+
+@router.get("/{user_id}/posts", response_model=List[PostWithRelationsResponse])
+async def read_user_posts(
+    user_id: int,
+    db: AsyncSession = Depends(get_db)
+):
+    """Get all posts by a user (one-to-many relationship)"""
+    crud = UserCRUD(db)
+    posts = await crud.get_user_posts(user_id)
+    return posts
