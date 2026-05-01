@@ -3,11 +3,12 @@ from fastapi import APIRouter, Depends, status, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.user_crud import UserCRUD
 from app.crud.post_crud import PostCRUD
-from app.schemas.user_schema import UserResponse, UserCreate, UserWithRelationsResponse, UserUpdate
+from app.schemas.user_schema import UserResponse, UserCreate, UserWithRelationsResponse, UserUpdate, UserWithFriendsResponse
 from app.schemas.user_profile_schema import UserProfileUpdate
 from app.schemas.post_schema import PostWithRelationsResponse
+from app.schemas.friend_schema import FriendRequest
 from app.core.database import get_db
-from app.core.errors import handle_validation_error, handle_conflict_error, handle_not_found_error
+from app.core.errors import handle_validation_error, handle_conflict_error, handle_not_found_error, handle_relationship_error
 
 router = APIRouter()
 
@@ -138,4 +139,27 @@ async def create_user_post(
     except Exception as e:
         if hasattr(e, 'code') and e.code == "NOT_FOUND_ERROR":
             await handle_not_found_error("User", user_id)
+        raise
+
+@router.post("/{user_id}/friends", response_model=UserWithFriendsResponse)
+async def add_friend(
+    user_id: int,
+    friend_request: FriendRequest,
+    db: AsyncSession = Depends(get_db)
+):
+    """Add a friend (many-to-many relationship)"""
+    try:
+        crud = UserCRUD(db)
+        user = await crud.add_friend(user_id, friend_request.friend_id)
+        return user
+    except Exception as e:
+        if hasattr(e, 'code'):
+            if e.code == "NOT_FOUND_ERROR":
+                resource = "User" if "User" in str(e) else "Friend"
+                resource_id = friend_request.friend_id if "Friend" in str(e) else user_id
+                await handle_not_found_error(resource, resource_id)
+            elif e.code == "CONFLICT_ERROR":
+                await handle_conflict_error(str(e))
+            elif e.code == "RELATIONSHIP_ERROR":
+                await handle_relationship_error(str(e))
         raise
