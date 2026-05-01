@@ -163,3 +163,24 @@ async def add_friend(
             elif e.code == "RELATIONSHIP_ERROR":
                 await handle_relationship_error(str(e))
         raise
+
+@router.delete("/{user_id}/friends/{friend_id}", response_model=UserWithFriendsResponse)
+async def remove_friend(
+    user_id: int,
+    friend_id: int,
+    db: AsyncSession = Depends(get_db)
+):
+    """Remove a friend (many-to-many relationship)"""
+    try:
+        crud = UserCRUD(db)
+        user = await crud.remove_friend(user_id, friend_id)
+        return user
+    except Exception as e:
+        if hasattr(e, 'code'):
+            if e.code == "NOT_FOUND_ERROR":
+                resource = "User" if "User" in str(e) else "Friend"
+                resource_id = friend_id if "Friend" in str(e) else user_id
+                await handle_not_found_error(resource, resource_id)
+            elif e.code == "RELATIONSHIP_ERROR":
+                await handle_relationship_error(str(e))
+        raise
