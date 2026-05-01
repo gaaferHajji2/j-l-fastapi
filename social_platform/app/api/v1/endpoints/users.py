@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, status, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.user_crud import UserCRUD
-from app.schemas.user_schema import UserResponse, UserCreate, UserWithRelationsResponse
+from app.schemas.user_schema import UserResponse, UserCreate, UserWithRelationsResponse, UserUpdate
 from app.core.database import get_db
 from app.core.errors import handle_validation_error, handle_conflict_error, handle_not_found_error
 
@@ -56,3 +56,22 @@ async def read_user(
         await handle_not_found_error("User", user_id)
     
     return user
+
+@router.put("/{user_id}", response_model=UserResponse)
+async def update_user(
+    user_id: int,
+    user_data: UserUpdate,
+    db: AsyncSession = Depends(get_db)
+):
+    """Update user information"""
+    try:
+        crud = UserCRUD(db)
+        user = await crud.update_user(user_id, user_data)
+        return user
+    except Exception as e:
+        if hasattr(e, 'code'):
+            if e.code == "NOT_FOUND_ERROR":
+                await handle_not_found_error("User", user_id)
+            elif e.code == "CONFLICT_ERROR":
+                await handle_conflict_error(str(e))
+        raise
