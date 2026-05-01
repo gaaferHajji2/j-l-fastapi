@@ -6,7 +6,7 @@ from app.models.post import Post
 from app.models.category import Category
 from app.core.errors import NotFoundError, ConflictError
 
-class ProductCRUD:
+class PostCRUD:
     def __init__(self, db: AsyncSession):
         pass
 
