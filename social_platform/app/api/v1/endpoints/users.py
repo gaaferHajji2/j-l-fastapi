@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.user_crud import UserCRUD
 from app.schemas.user_schema import UserResponse, UserCreate, UserWithRelationsResponse
 from app.core.database import get_db
-from app.core.errors import handle_validation_error, handle_conflict_error
+from app.core.errors import handle_validation_error, handle_conflict_error, handle_not_found_error
 
 router = APIRouter()
 
