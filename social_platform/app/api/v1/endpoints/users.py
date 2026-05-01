@@ -75,3 +75,15 @@ async def update_user(
             elif e.code == "CONFLICT_ERROR":
                 await handle_conflict_error(str(e))
         raise
+
+@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user(
+    user_id: int,
+    db: AsyncSession = Depends(get_db)
+):
+    """Delete a user"""
+    crud = UserCRUD(db)
+    deleted = await crud.delete_user(user_id)
+    
+    if not deleted:
+        await handle_not_found_error("User", user_id)
