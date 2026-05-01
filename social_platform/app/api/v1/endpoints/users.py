@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, status, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.user_crud import UserCRUD
 from app.schemas.user_schema import UserResponse, UserCreate, UserWithRelationsResponse, UserUpdate
+from app.schemas.user_profile_schema import UserProfileUpdate
 from app.core.database import get_db
 from app.core.errors import handle_validation_error, handle_conflict_error, handle_not_found_error
 
@@ -87,3 +88,22 @@ async def delete_user(
     
     if not deleted:
         await handle_not_found_error("User", user_id)
+
+@router.put("/{user_id}/profile", response_model=UserResponse)
+async def update_user_profile(
+    user_id: int,
+    profile_data: UserProfileUpdate,
+    db: AsyncSession = Depends(get_db)
+):
+    """Update user profile (one-to-one relationship)"""
+    try:
+        crud = UserCRUD(db)
+        await crud.update_profile(user_id, profile_data)
+        
+        # Return updated user
+        user = await crud.get_user(user_id)
+        return user
+    except Exception as e:
+        if hasattr(e, 'code') and e.code == "NOT_FOUND_ERROR":
+            await handle_not_found_error("User", user_id)
+        raise
