@@ -10,3 +10,4 @@ __pycache__
 uploads/
 alembic.ini
 JLOKA
+node_modules/
