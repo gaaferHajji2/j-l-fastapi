@@ -32,4 +32,6 @@ class Event(HashModel):
 
 @app.post('/deliveries/create')
 async def create_delivery(request: Request):
-    pass
+    body = await request.json()
+    delivery = Delivery(budget=body['data']['budget'], notes=body['data']['notes']).save()
+    return delivery
