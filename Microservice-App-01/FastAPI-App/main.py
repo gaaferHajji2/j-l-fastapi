@@ -15,6 +15,14 @@ redis = get_redis_connection(
     decode_responses = True,
 )
 
+class Product(HashModel, index=True):
+    name: str
+    price: float
+    quantity: int
+
+    class Meta:
+        database: redis
+
 class Delivery(HashModel, index = True):
     budget: int = 0
     notes: str = ''
