@@ -67,5 +67,9 @@ async def create_product(product: Product):
 async def get_product_by_pk(pk: str):
     try:
         return format(pk)
-    except NotFoundError as e:
+    except NotFoundError:
         raise HTTPException(status_code=404, detail={"msg": "Model Not Found"})
+
+@app.delete("/product/{pk}")
+async def delete_product_by_pk(pk: str):
+    return Product.delete(pk)
